@@ -31,7 +31,9 @@ jobs:
       - name: Delete IDE Zipfile
         run: Remove-Item -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_ZIP"
       - name: Install the IDE
-        run: "& $env:DRIVE\$env:TLSR825X\$env:IDE_DIR\$env:IDE_EXE"
+        run: Write-Output "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR"
+      - name: Install the IDE
+        run: Write-Output "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\$env:IDE_EXE"
       - name: List IDE
         run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR"
 
