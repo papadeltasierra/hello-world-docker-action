@@ -17,24 +17,24 @@ jobs:
     steps:
       # Download the IDE.
       - name: Create TLSR825x base directory
-        run: New-Item -Path "$DRIVE\" -Name "$TLSR825X" -ItemType "directory"
+        run: New-Item -Path "$env:DRIVE\" -Name "$env:TLSR825X" -ItemType "directory"
       - name: Create TLSR825x IDE directory
-        run: New-Item -Path "$DRIVE\$TLSR825X" -Name "$IDE_DIR" -ItemType "directory"
+        run: New-Item -Path "$env:DRIVE\$env:TLSR825X" -Name "$env:IDE_DIR" -ItemType "directory"
       - name: Create TLSR825x SDK directory
-        run: New-Item -Path "$DRIVE\$TLSR825X" -Name "$SDK_DIR" -ItemType "directory"
+        run: New-Item -Path "$env:DRIVE\$env:TLSR825X" -Name "$env:SDK_DIR" -ItemType "directory"
       - name: Download the IDE
-        run: Invoke-RestMethod -Method GET -FollowRelLink -Uri "$IDE_URI" -OutFile "$DRIVE\$TLSR825X\$IDE_DIR\$IDE_ZIP"
+        run: Invoke-RestMethod -Method GET -FollowRelLink -Uri "$env:IDE_URI" -OutFile "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\$env:IDE_ZIP"
       - name: Unzip the IDE
-        run: Expand-Archive -Path "$DRIVE\$TLSR825X\$IDE_DIR\$IDE_ZIP" -DestinationPath "$DRIVE\$TLSR825X\$IDE_DIR"
+        run: Expand-Archive -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\$env:IDE_ZIP" -DestinationPath "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR"
       - name: Delete IDE Zipfile
-        run: Remove-Item -Path "$DRIVE\$TLSR825X\$IDE_DIR\$IDE_ZIP"
+        run: Remove-Item -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\$env:IDE_ZIP"
       - name: List IDE
-        run: Get-ChildItem -Path "$DRIVE\$TLSR825X\$IDE_DIR"
+        run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR"
       - name: Download the SDK
-        run: Invoke-RestMethod -Method GET -FollowRelLink -Uri "$SDK_URI" -OutFile "$DRIVE\$TLSR825X\$SDK_DIR\$SDK_ZIP"
+        run: Invoke-RestMethod -Method GET -FollowRelLink -Uri "$env:SDK_URI" -OutFile "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR\$env:SDK_ZIP"
       - name: Unzip the SDK
-        run: Expand-Archive -Path "$DRIVE\$TLSR825X\$SDK_DIR\$SDK_ZIP" -DestinationPath "$DRIVE\$TLSR825X\$SDK_DIR"
+        run: Expand-Archive -Path "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR\$env:SDK_ZIP" -DestinationPath "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR"
       - name: Delete SDK Zipfile
-        run: Remove-Item -Path "$DRIVE\$TLSR825X\$SDK_DIR\$SDK_ZIP"
+        run: Remove-Item -Path "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR\$env:SDK_ZIP"
       - name: List SDK
-        run: Get-ChildItem -Path "$DRIVE\$TLSR825X\$SDK_DIR"
+        run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR"
