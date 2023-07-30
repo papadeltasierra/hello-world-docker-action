@@ -6,9 +6,21 @@ jobs:
     name: A job to create a TLSR825x IDE environment.
     steps:
       # Download the IDE.
-      - name: Create working directory
+      - name: Create TLSR825x base directory
         run: New-Item -Path "c:\" -Name "tlsr825x" -ItemType "directory"
+      - name: Create TLSR825x IDE directory
+        run: New-Item -Path "c:\tlsr825x" -Name "ide" -ItemType "directory"
+      - name: Create TLSR825x SDK directory
+        run: New-Item -Path "c:\tlsr825x" -Name "sdk" -ItemType "directory"
       - name: Download the IDE
-        run: Invoke-RestMethod -Method GET -FollowRelLink -Uri https://www.dropbox.com/s/ths9rev0tvhhl96/Telink_IDE.zip?dl=1 -OutFile c:\tlsr825x\Telink_IDE.zip
+        run: Invoke-RestMethod -Method GET -FollowRelLink -Uri https://www.dropbox.com/s/ths9rev0tvhhl96/Telink_IDE.zip?dl=1 -OutFile c:\tlsr825x\ide\Telink_IDE.zip
       - name: Unzip the IDE
-        run: Expand-Archive -Path c:\tlsr825x\Telink_IDE.zip -DestinationPath c:\tlsr825x
+        run: Expand-Archive -Path c:\tlsr825x\ide\Telink_IDE.zip -DestinationPath c:\tlsr825x\ide
+      - name: List IDE
+        run: Get-ChildItem -Path C:\tlsr825x\ide
+      - name: Download the SDK
+        run: Invoke-RestMethod -Method GET -FollowRelLink -Uri http://wiki.telink-semi.cn/tools_and_sdk/Zigbee/Zigbee_SDK.zip -OutFile c:\tlsr825x\sdk\Zigbee_SDK.zip
+      - name: Unzip the SDK
+        run: Expand-Archive -Path c:\tlsr825x\sdk\Zigbee_SDK.zip -DestinationPath c:\tlsr825x\sdk
+      - name: List SDK
+        run: Get-ChildItem -Path C:\tlsr825x\sdk
