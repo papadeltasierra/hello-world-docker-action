@@ -11,4 +11,4 @@ jobs:
       - name: Download the IDE
         run: Invoke-RestMethod -Method GET -FollowRelLink -Uri https://www.dropbox.com/s/ths9rev0tvhhl96/Telink_IDE.zip?dl=1 -OutFile c:\tlsr825x\Telink_IDE.zip
       - name: Unzip the IDE
-        run: Expand-Archive -Path Telink_IDE.zip -DestinationPath c:\tlsr825x
+        run: Expand-Archive -Path c:\tlsr825x\Telink_IDE.zip -DestinationPath c:\tlsr825x
