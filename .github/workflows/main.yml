@@ -5,9 +5,9 @@ env:
   TLSR825X: tlsr8258
   IDE_DIR: ide
   SDK_DIR: sdk
-  IDE_URI: https://www.dropbox.com/s/ths9rev0tvhhl96/Telink_IDE.zip?dl=1
+  IDE_URI: "https://www.dropbox.com/s/ths9rev0tvhhl96/Telink_IDE.zip?dl=1"
   IDE_ZIP: Telink_IDE.zip
-  SDK_URI: http://wiki.telink-semi.cn/tools_and_sdk/Zigbee/Zigbee_SDK.zip
+  SDK_URI: "http://wiki.telink-semi.cn/tools_and_sdk/Zigbee/Zigbee_SDK.zip"
   SDK_ZIP: Zigbee_SDK.zip
 
 jobs:
