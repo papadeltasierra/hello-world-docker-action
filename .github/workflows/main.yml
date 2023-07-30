@@ -23,12 +23,12 @@ jobs:
 
       # Download and expand the IDE
       - name: Download the IDE
-        run: Invoke-RestMethod -Method GET -FollowRelLink -Uri "$env:IDE_URI" -OutFile "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\$env:IDE_ZIP"
+        run: Invoke-RestMethod -Method GET -FollowRelLink -Uri "$env:IDE_URI" -OutFile "$env:DRIVE\$env:TLSR825X\$env:IDE_ZIP"
       # Note that the IDE has a path "IDE" baked into it.
       - name: Unzip the IDE
-        run: Expand-Archive -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\$env:IDE_ZIP" -DestinationPath "$env:DRIVE\$env:TLSR825X"
+        run: Expand-Archive -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_ZIP" -DestinationPath "$env:DRIVE\$env:TLSR825X"
       - name: Delete IDE Zipfile
-        run: Remove-Item -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\$env:IDE_ZIP"
+        run: Remove-Item -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_ZIP"
       - name: List IDE
         run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR"
 
