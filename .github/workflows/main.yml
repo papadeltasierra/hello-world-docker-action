@@ -3,17 +3,12 @@ on: [push]
 jobs:
   hello_world_job:
     runs-on: windows-latest
-    name: A job to say hello
+    name: A job to create a TLSR825x IDE environment.
     steps:
-      # To use this repository's private action,
-      # you must check out the repository
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Hello world action step
-        uses: ./ # Uses an action in the root directory
-        id: hello
-        with:
-          who-to-greet: 'Mona Lisa'
-      # Use the output from the `hello` step
-      - name: Get the output time
-        run: echo "The time was ${{ steps.hello.outputs.time }}"
+      # Download the IDE.
+      - name: Create working directory
+        run: New-Item -Path "c:\" -Name "tlsr825x" -ItemType "directory"
+      - name: Download the IDE
+        run: Invoke-RestMethod -Method GET -Uri -FollowRelLink https://www.dropbox.com/s/ths9rev0tvhhl96/Telink_IDE.zip?dl=1 -OutFile c:\tlsr825x\Telink_IDE.zip
+      - name: Unzip the IDE
+        run: Expand-Archive -Path Telink_IDE.zip -DestinationPath c:\tlsr825x
