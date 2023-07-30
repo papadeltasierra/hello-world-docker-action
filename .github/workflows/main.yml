@@ -3,7 +3,7 @@ on: [push]
 env:
   DRIVE: "c:"
   TLSR825X: tlsr8258
-  IDE_DIR: ide
+  IDE_DIR: IDE
   SDK_DIR: sdk
   IDE_URI: "https://www.dropbox.com/s/ths9rev0tvhhl96/Telink_IDE.zip?dl=1"
   IDE_ZIP: Telink_IDE.zip
@@ -15,21 +15,24 @@ jobs:
     runs-on: windows-latest
     name: A job to create a TLSR825x IDE environment.
     steps:
-      # Download the IDE.
+      # Create the required directories.
       - name: Create TLSR825x base directory
         run: New-Item -Path "$env:DRIVE\" -Name "$env:TLSR825X" -ItemType "directory"
-      - name: Create TLSR825x IDE directory
-        run: New-Item -Path "$env:DRIVE\$env:TLSR825X" -Name "$env:IDE_DIR" -ItemType "directory"
       - name: Create TLSR825x SDK directory
         run: New-Item -Path "$env:DRIVE\$env:TLSR825X" -Name "$env:SDK_DIR" -ItemType "directory"
+
+      # Download and expand the IDE
       - name: Download the IDE
         run: Invoke-RestMethod -Method GET -FollowRelLink -Uri "$env:IDE_URI" -OutFile "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\$env:IDE_ZIP"
+      # Note that the IDE has a path "IDE" baked into it.
       - name: Unzip the IDE
-        run: Expand-Archive -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\$env:IDE_ZIP" -DestinationPath "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR"
+        run: Expand-Archive -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\$env:IDE_ZIP" -DestinationPath "$env:DRIVE\$env:TLSR825X"
       - name: Delete IDE Zipfile
         run: Remove-Item -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\$env:IDE_ZIP"
       - name: List IDE
         run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR"
+
+      # Download and expand the SDK.
       - name: Download the SDK
         run: Invoke-RestMethod -Method GET -FollowRelLink -Uri "$env:SDK_URI" -OutFile "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR\$env:SDK_ZIP"
       - name: Unzip the SDK
