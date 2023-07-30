@@ -1,5 +1,15 @@
 on: [push]
 
+env:
+  DRIVE: c:
+  TLSR825X: tlsr8258
+  IDE_DIR: ide
+  SDK_DIR: sdk
+  IDE_URI: https://www.dropbox.com/s/ths9rev0tvhhl96/Telink_IDE.zip?dl=1
+  IDE_ZIP: Telink_IDE.zip
+  SDK_URI: http://wiki.telink-semi.cn/tools_and_sdk/Zigbee/Zigbee_SDK.zip
+  SDK_ZIP: Zigbee_SDK.zip
+
 jobs:
   hello_world_job:
     runs-on: windows-latest
@@ -7,20 +17,24 @@ jobs:
     steps:
       # Download the IDE.
       - name: Create TLSR825x base directory
-        run: New-Item -Path "c:\" -Name "tlsr825x" -ItemType "directory"
+        run: New-Item -Path "%DRIVE%\" -Name "%TLSR825X% -ItemType "directory"
       - name: Create TLSR825x IDE directory
-        run: New-Item -Path "c:\tlsr825x" -Name "ide" -ItemType "directory"
+        run: New-Item -Path "%DRIVE%\%TLSR825X%" -Name "%IDE_DIR%" -ItemType "directory"
       - name: Create TLSR825x SDK directory
-        run: New-Item -Path "c:\tlsr825x" -Name "sdk" -ItemType "directory"
+        run: New-Item -Path "%DRIVE%\%TLSR825X%" -Name "%SDK_DIR%" -ItemType "directory"
       - name: Download the IDE
-        run: Invoke-RestMethod -Method GET -FollowRelLink -Uri https://www.dropbox.com/s/ths9rev0tvhhl96/Telink_IDE.zip?dl=1 -OutFile c:\tlsr825x\ide\Telink_IDE.zip
+        run: Invoke-RestMethod -Method GET -FollowRelLink -Uri %IDE_URI% -OutFile %DRIVE%\%TLSR825X%\%IDE_DIR%\%IDE_ZIP%
       - name: Unzip the IDE
-        run: Expand-Archive -Path c:\tlsr825x\ide\Telink_IDE.zip -DestinationPath c:\tlsr825x\ide
+        run: Expand-Archive -Path %DRIVE%\%TLSR825X%\%IDE_DIR%\%IDE_ZIP% -DestinationPath %DRIVE%\%TLSR825X%\%IDE_DIR%
+      - name: Delete IDE Zipfile
+        run: Remove-Item -Path %DRIVE%\%TLSR825X%\%IDE_DIR%\%IDE_ZIP%
       - name: List IDE
-        run: Get-ChildItem -Path C:\tlsr825x\ide
+        run: Get-ChildItem -Path %DRIVE%\%TLSR825X%\%IDE_DIR%
       - name: Download the SDK
-        run: Invoke-RestMethod -Method GET -FollowRelLink -Uri http://wiki.telink-semi.cn/tools_and_sdk/Zigbee/Zigbee_SDK.zip -OutFile c:\tlsr825x\sdk\Zigbee_SDK.zip
+        run: Invoke-RestMethod -Method GET -FollowRelLink -Uri %SDK_URI% -OutFile %DRIVE%\%TLSR825X%\%SDK_DIR%\%SDK_ZIP%
       - name: Unzip the SDK
-        run: Expand-Archive -Path c:\tlsr825x\sdk\Zigbee_SDK.zip -DestinationPath c:\tlsr825x\sdk
+        run: Expand-Archive -Path %DRIVE%\%TLSR825X%\%SDK_DIR%\%SDK_ZIP% -DestinationPath %DRIVE%\%TLSR825X%\%SDK_DIR%
+      - name: Delete SDK Zipfile
+        run: Remove-Item -Path %DRIVE%\%TLSR825X%\%SDK_DIR%\%SDK_ZIP%
       - name: List SDK
-        run: Get-ChildItem -Path C:\tlsr825x\sdk
+        run: Get-ChildItem -Path %DRIVE%\%TLSR825X%\%SDK_DIR%
