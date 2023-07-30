@@ -1,7 +1,7 @@
 on: [push]
 
 env:
-  DRIVE: c:
+  DRIVE: "c:"
   TLSR825X: tlsr8258
   IDE_DIR: ide
   SDK_DIR: sdk
