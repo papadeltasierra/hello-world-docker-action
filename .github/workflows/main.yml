@@ -39,6 +39,10 @@ jobs:
             Write-Warning "Expected sha256: $env:IDE_HASH"
             Write-Warning "Actual sha256:   $(Out-String -InputObject $Hash.hash)"
           }
+
+          - name: List IDE
+        run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X" -Recurse
+
       # Note that the IDE has a path "IDE" baked into it.
       - name: Unzip the IDE
         run: Expand-Archive -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_ZIP" -DestinationPath "$env:DRIVE\$env:TLSR825X"
@@ -46,7 +50,7 @@ jobs:
         run: Remove-Item -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_ZIP"
 
       - name: List IDE
-        run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR" -Recurse
+        run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X" -Recurse
 
       # Note the strange single-quote syntax required for the call operator.
       - name: Install the IDE
