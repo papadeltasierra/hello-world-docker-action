@@ -23,6 +23,8 @@ jobs:
         run: New-Item -Path "$env:DRIVE\" -Name "$env:TLSR825X" -ItemType "directory"
       - name: Create TLSR825x SDK directory
         run: New-Item -Path "$env:DRIVE\$env:TLSR825X" -Name "$env:SDK_DIR" -ItemType "directory"
+      - name: Create TELink IDE directory
+        run: New-Item -Path "$env:DRIVE\$env:TLSR825X" -Name "$env:IDE_DIR" -ItemType "directory"
 
       # Download and expand the IDE
       - name: Download the IDE
