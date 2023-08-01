@@ -67,3 +67,9 @@ jobs:
         run: Remove-Item -Path "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR\$env:SDK_ZIP"
       - name: List SDK
         run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR"
+
+      - name: Find eclipsec.exe
+        run: Get-ChildItem -Path "c:\eclipsec.exe" -Recurse
+
+      - name: Find the workspace files
+        run: Get-ChildItem -Path "c:\tlsr_tc32" -Recurse
