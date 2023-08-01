@@ -47,11 +47,11 @@ jobs:
       # Note the strange single-quote syntax required for the call operator.
       - name: Install the IDE
         run: |
-          '& $env:DRIVE\$env:TLSR825X\$env:IDE_DIR\$env:IDE_EXE
-           /VERYSILENT
-           /SUPPRESSMSGBOXES
-           /DIR=$env:DRIVE\$env:TLSR825X\$env:IDE_DIR
-           /NOICONS
+          '& $env:DRIVE\$env:TLSR825X\$env:IDE_DIR\$env:IDE_EXE `
+           /VERYSILENT `
+           /SUPPRESSMSGBOXES `
+           /DIR=$env:DRIVE\$env:TLSR825X\$env:IDE_DIR `
+           /NOICONS `
            /LOG="$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\install.log"'
 
       - name: Show log file.
