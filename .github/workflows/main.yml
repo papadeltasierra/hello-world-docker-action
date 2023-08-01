@@ -53,6 +53,10 @@ jobs:
            /DIR=$env:DRIVE\$env:TLSR825X\$env:IDE_DIR
            /NOICONS
            /LOG="$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\install.log"'
+
+      - name: Show log file.
+        run: Get-Content -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\install.log"
+
       - name: List IDE
         run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR"
 
