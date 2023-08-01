@@ -3,7 +3,7 @@ on: [push]
 env:
   DRIVE: "c:"
   TLSR825X: tlsr8258
-  IDE_DIR: IDE
+  IDE_DIR: Telink_IDE
   SDK_DIR: sdk
   IDE_URI: "https://www.dropbox.com/s/ths9rev0tvhhl96/Telink_IDE.zip?dl=1"
   IDE_ZIP: Telink_IDE.zip
@@ -44,7 +44,14 @@ jobs:
         run: Remove-Item -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_ZIP"
       # Note the strange single-quote syntax required for the call operator.
       - name: Install the IDE
-        run: '& $env:DRIVE\$env:TLSR825X\$env:IDE_DIR\$env:IDE_EXE'
+        run: |
+          '& $env:DRIVE\$env:TLSR825X\$env:IDE_DIR\$env:IDE_EXE
+           /VERYSILENT
+           /SUPPRESSMSGBOXES
+           /DIR=$env:DRIVE\$env:TLSR825X\$env:IDE_DIR
+           /NOICONS
+           /LOG="$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\install.log"'
+          Get-Content -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\install.log"
       - name: List IDE
         run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR"
 
@@ -70,7 +77,7 @@ jobs:
 
       - name: Find eclipsec.exe
         run: |
-          Get-ChildItem -Path "c:\eclipsec.exe"
+          Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR"
 
       - name: Find the workspace files
         run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR\tlsr_tc32" -Recurse
