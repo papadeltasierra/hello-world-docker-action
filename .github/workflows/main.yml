@@ -69,7 +69,7 @@ jobs:
         run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR"
 
       - name: Find eclipsec.exe
-        run: Get-ChildItem -Path "c:\telink*"
+        run: Get-ChildItem -Path "c:\"
 
       - name: Find the workspace files
         run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR\tlsr_tc32" -Recurse
