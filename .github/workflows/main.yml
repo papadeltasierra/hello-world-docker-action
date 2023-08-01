@@ -6,12 +6,12 @@ env:
   IDE_DIR: IDE
   SDK_DIR: sdk
   IDE_URI: "https://www.dropbox.com/s/ths9rev0tvhhl96/Telink_IDE.zip?dl=1"
-  IDE_HASH: "D47595AAFAE1B711A04DC83BAB08467160EA2A3559EA976576C2F8A44F47BF1F"
   IDE_ZIP: Telink_IDE.zip
+  IDE_HASH: "D47595AAFAE1B711A04DC83BAB08467160EA2A3559EA976576C2F8A44F47BF1F"
   IDE_EXE: TelinkSDKv1.3.1.exe
   SDK_URI: "http://wiki.telink-semi.cn/tools_and_sdk/Zigbee/Zigbee_SDK.zip"
-  SDK_HASH: "AD3C28FC2A50E9D550B933335FD96CE2A58EECDD602DEB451FCC54087947E01C"
   SDK_ZIP: Zigbee_SDK.zip
+  SDK_HASH: "AD3C28FC2A50E9D550B933335FD96CE2A58EECDD602DEB451FCC54087947E01C"
 
 jobs:
   hello_world_job:
@@ -35,7 +35,7 @@ jobs:
           {
             Write-Warning "IDE hash has changed implying IDE update!"
             Write-Warning "Expected sha256: $env:IDE_HASH"
-            Write-Warning "Actual sha256:   $Hash.hash"
+            Write-Warning "Actual sha256:   $(Out-String -InputObject $Hash.hash)"
           }
       # Note that the IDE has a path "IDE" baked into it.
       - name: Unzip the IDE
@@ -49,17 +49,17 @@ jobs:
         run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR"
 
       # Download and expand the SDK.
-      - name: Download the SDK
+      - name: Download the Zigbee SDK
         run: Invoke-RestMethod -Method GET -FollowRelLink -Uri "$env:SDK_URI" -OutFile "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR\$env:SDK_ZIP"
-      # Validate that the SDK has not changed.
+      # Validate that the Zigbee SDK has not changed.
       - name: Check SDK hash/version
         run: |
           $Hash=$(Get-FileHash -Path "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR\$env:SDK_ZIP" -Algorithm sha256)
-          if ($Hash.hash -ne $env:IDE_HASH)
+          if ($Hash.hash -ne $env:SDK_HASH)
           {
+            Write-Warning "Zigbee SDK hash has changed implying Zigbee SDK update!"
             Write-Warning "Expected sha256: $env:SDK_HASH"
-            Write-Warning "Actual sha256:   $Hash.hash"
-            Write-Warning "SDK hash has changed implying SDK update!"
+            Write-Warning "Actual sha256:   $(Out-String -InputObject $Hash.hash)"
           }
       - name: Unzip the SDK
         run: Expand-Archive -Path "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR\$env:SDK_ZIP" -DestinationPath "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR"
