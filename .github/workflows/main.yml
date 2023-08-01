@@ -69,7 +69,9 @@ jobs:
         run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR"
 
       - name: Find eclipsec.exe
-        run: Get-ChildItem -Path "c:\"
+        run: |
+          Write-Warning "CWD is $pwd"
+          Get-ChildItem -Path "$pwd"
 
       - name: Find the workspace files
         run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR\tlsr_tc32" -Recurse
@@ -80,5 +82,5 @@ jobs:
       #   -vm c:\Users\PDS\TelinkSDK\jre\bin\client `
       #   -noSplash `
       #   -application org.eclipse.cdt.managedbuilder.core.headlessbuild  `
-      #   -data C:\Users\PDS\telink\workspaces  `
+      #   -data "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR\tlsr_tc32" `
       #   -build tl_zigbee_sdk/sampleGW_8258
