@@ -40,7 +40,7 @@ jobs:
             Write-Warning "Actual sha256:   $(Out-String -InputObject $Hash.hash)"
           }
 
-          - name: List IDE
+      - name: List IDE
         run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X" -Recurse
 
       # Note that the IDE has a path "IDE" baked into it.
