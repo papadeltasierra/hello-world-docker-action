@@ -44,6 +44,10 @@ jobs:
         run: Expand-Archive -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_ZIP" -DestinationPath "$env:DRIVE\$env:TLSR825X"
       - name: Delete IDE Zipfile
         run: Remove-Item -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_ZIP"
+
+      - name: List IDE
+        run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR" -Recurse
+
       # Note the strange single-quote syntax required for the call operator.
       - name: Install the IDE
         run: '& $env:DRIVE\$env:TLSR825X\$env:IDE_DIR\IDE\$env:IDE_EXE /VERYSILENT /SUPPRESSMSGBOXES /DIR=$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\IDE /NOICONS /LOG=$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\IDE\install.log'
