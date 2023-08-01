@@ -69,7 +69,16 @@ jobs:
         run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR"
 
       - name: Find eclipsec.exe
-        run: Get-ChildItem -Path "c:\eclipsec.exe" -Recurse
+        run: Get-ChildItem -Path "c:\telink*"
 
       - name: Find the workspace files
-        run: Get-ChildItem -Path "c:\tlsr_tc32" -Recurse
+        run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR\tlsr_tc32" -Recurse
+
+      # -name: Build TLSR8258 ZigBee image
+      #  run: |
+      #   eclipsec `
+      #   -vm c:\Users\PDS\TelinkSDK\jre\bin\client `
+      #   -noSplash `
+      #   -application org.eclipse.cdt.managedbuilder.core.headlessbuild  `
+      #   -data C:\Users\PDS\telink\workspaces  `
+      #   -build tl_zigbee_sdk/sampleGW_8258
