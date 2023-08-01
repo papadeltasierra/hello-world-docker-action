@@ -31,9 +31,11 @@ jobs:
       - name: Check IDE hash/version
         run: |
           $Hash=$(Get-FileHash -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_ZIP" -Algorithm sha256)
-          if ($Hash -ne $env:IDE_HASH)
+          if ($Hash.hash -ne $env:IDE_HASH)
           {
-            Write-Warning "IDE has has changed implying IDE update!"
+            Write-Warning "IDE hash has changed implying IDE update!"
+            Write-Warning "Expected sha256: $env:IDE_HASH"
+            Write-Warning "Actual sha256:   $Hash.hash"
           }
       # Note that the IDE has a path "IDE" baked into it.
       - name: Unzip the IDE
@@ -53,9 +55,11 @@ jobs:
       - name: Check SDK hash/version
         run: |
           $Hash=$(Get-FileHash -Path "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR\$env:SDK_ZIP" -Algorithm sha256)
-          if ($Hash -ne $env:IDE_HASH)
+          if ($Hash.hash -ne $env:IDE_HASH)
           {
-            Write-Warning "IDE has has changed implying IDE update!"
+            Write-Warning "Expected sha256: $env:SDK_HASH"
+            Write-Warning "Actual sha256:   $Hash.hash"
+            Write-Warning "SDK hash has changed implying SDK update!"
           }
       - name: Unzip the SDK
         run: Expand-Archive -Path "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR\$env:SDK_ZIP" -DestinationPath "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR"
