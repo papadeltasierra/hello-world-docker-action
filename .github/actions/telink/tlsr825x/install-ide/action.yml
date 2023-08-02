@@ -20,7 +20,7 @@ runs:
     - name: Create target directoryTLSR825x base directory
       shell: pwsh
       run: |
-        if (!(Test-Path ${{ inputs.directory }}-PathType container)) {
+        if (!(Test-Path ${{ inputs.directory }} -PathType container)) {
           New-Item -Path ${{ inputs.directory }} -ItemType "directory"
         }
 

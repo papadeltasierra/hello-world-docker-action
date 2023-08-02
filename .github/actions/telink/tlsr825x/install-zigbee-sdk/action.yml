@@ -16,9 +16,9 @@ runs:
     # Create the required directories.
     - name: Create target directory
       run: |
-        if (!(Test-Path ${{ inputs.directory }}-PathType container)) {
+        if (!(Test-Path ${{ inputs.directory }} -PathType container)) {
           New-Item -Path ${{ input.directory }} -ItemType "directory"
-        )
+        }
 
     # Download and expand the SDK.
     - name: Download the Zigbee SDK
