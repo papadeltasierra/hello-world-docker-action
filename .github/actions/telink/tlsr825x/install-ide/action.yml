@@ -64,7 +64,7 @@ runs:
         if ($exes[0].FullName -match '(v\d+\.\d+\.\d+)') {
           $version=$Matches[0]
         }
-        Write-Information "Telink IDE version: ${version}"
+        Write-Information -Message "Telink IDE version: ${version}" -InformationAction:Continue
 
     # Note the strange single-quote syntax required for the call operator.
     - name: Install the IDE
@@ -73,7 +73,7 @@ runs:
         Get-ChildItem -Path "$env:TEMP\IDE\telink*.exe"
         $exes=Get-ChildItem -Path "$env:TEMP\IDE\telink*.exe"
         $exes[0].FullName
-        '& $exes[0].FullName /VERYSILENT /SUPPRESSMSGBOXES /DIR=$inputs.directory /NOICONS /LOG=$env:TEMP\install.log'
+        '& $exes[0].FullName /VERYSILENT /SUPPRESSMSGBOXES /DIR=$inputs.directory /NOICONS /LOG=$env:TEMP\install.log' -RunAsAdmin
         Get-Content -Path "$env:TEMP\install.log"
 
     - name: List IDE
