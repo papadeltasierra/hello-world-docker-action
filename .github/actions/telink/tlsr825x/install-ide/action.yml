@@ -35,7 +35,7 @@ runs:
         if ($Hash.hash -ne $env:IDE_HASH)
         {
           Write-Warning "IDE hash has changed implying IDE update!"
-          Write-Warning "Expected sha256: $env:IDE_HASH"
+          Write-Warning "Expected sha256: ${env:IDE_HASH}"
           Write-Warning "Actual sha256:   $(Out-String -InputObject $Hash.hash)"
         }
 
@@ -61,10 +61,10 @@ runs:
           exit 1
         }
         $version="unknown"
-        if ($exes[0].FullName -match '(v\d+\.\d+\.\d+)') { `
-          $version=$Matches[0] `
+        if ($exes[0].FullName -match '(v\d+\.\d+\.\d+)') {
+          $version=$Matches[0]
         }
-        Write-Info "Telink IDE version: $version"
+        Write-Information "Telink IDE version: ${version}"
 
     # Note the strange single-quote syntax required for the call operator.
     - name: Install the IDE

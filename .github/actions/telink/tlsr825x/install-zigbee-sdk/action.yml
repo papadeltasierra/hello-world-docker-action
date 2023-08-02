@@ -33,13 +33,13 @@ runs:
         if ($Hash.hash -ne $env:SDK_HASH)
         {
           Write-Warning "Zigbee SDK hash has changed implying Zigbee SDK update!"
-          Write-Warning "Expected sha256: $env:SDK_HASH"
+          Write-Warning "Expected sha256: ${env:SDK_HASH}"
           Write-Warning "Actual sha256:   $(Out-String -InputObject $Hash.hash)"
         }
 
     - name: Unzip the SDK
       shell: pwsh
-      run: Expand-Archive -Path "$env:TEMP\$env:SDK_ZIP" -DestinationPath "$nnputs.directory"
+      run: Expand-Archive -Path "$env:TEMP\$env:SDK_ZIP" -DestinationPath "$inputs.directory"
 
     - name: Delete SDK Zipfile
       shell: pwsh
