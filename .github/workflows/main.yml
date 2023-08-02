@@ -18,7 +18,11 @@ jobs:
     runs-on: windows-latest
     name: install the TLSR825x build environments.
     steps:
+      # We only need the actions currently since we are using the default builds etc.
       - uses: actions/checkout@v3
+        with:
+          sparse-checkout: |
+            .github
       - id: install-ide
         uses: ./.github/actions/telink/tlsr825x/install-ide
       - id: install-zigbee-sdk
