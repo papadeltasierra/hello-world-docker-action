@@ -21,8 +21,8 @@ runs:
       shell: pwsh
       run: |
         eclipsec `
-        -vm "$input.ide\jre\bin\client" `
+        -vm "$inputs.ide\jre\bin\client" `
         -noSplash `
         -application org.eclipse.cdt.managedbuilder.core.headlessbuild  `
-        -data "$input.zigbee_sdk\tlsr_tc32" `
-        -build "$input.zigbee_sdk/$input.project"
+        -data "$inputs.zigbee_sdk\tlsr_tc32" `
+        -build "$inputs.zigbee_sdk/$inputs.project"

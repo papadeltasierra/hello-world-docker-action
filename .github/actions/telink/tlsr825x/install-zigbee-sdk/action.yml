@@ -39,7 +39,7 @@ runs:
 
     - name: Unzip the SDK
       shell: pwsh
-      run: Expand-Archive -Path "$env:TEMP\$env:SDK_ZIP" -DestinationPath "$input.directory"
+      run: Expand-Archive -Path "$env:TEMP\$env:SDK_ZIP" -DestinationPath "$nnputs.directory"
 
     - name: Delete SDK Zipfile
       shell: pwsh
@@ -47,4 +47,4 @@ runs:
 
     - name: List SDK
       shell: pwsh
-      run: Get-ChildItem -Path "$input.directory"
+      run: Get-ChildItem -Path "$nnputs.directory"

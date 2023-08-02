@@ -21,7 +21,7 @@ runs:
       shell: pwsh
       run: |
         if (!(Test-Path ${{ inputs.directory }}-PathType container)) {
-          New-Item -Path ${{ input.directory }} -ItemType "directory"
+          New-Item -Path ${{ inputs.directory }} -ItemType "directory"
         )
 
     # Download and expand the IDE
@@ -77,9 +77,9 @@ runs:
       shell: pwsh
       run: |
         $exes=Get-ChildItem -Path "$env:TEMP\IDE\telink*.exe"
-        '& $exes[0].FullName /VERYSILENT /SUPPRESSMSGBOXES /DIR=$input.directory /NOICONS /LOG=$env:TEMP\install.log'
+        '& $exes[0].FullName /VERYSILENT /SUPPRESSMSGBOXES /DIR=$inputs.directory /NOICONS /LOG=$env:TEMP\install.log'
         Get-Content -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\IDE\install.log"
 
     - name: List IDE
       shell: pwsh
-      run: Get-ChildItem -Path "$input.directory"
+      run: Get-ChildItem -Path "$inputs.directory"
