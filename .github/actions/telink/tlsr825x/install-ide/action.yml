@@ -20,9 +20,9 @@ runs:
     - name: Create target directoryTLSR825x base directory
       shell: pwsh
       run: |
-        if (!(Test-Path ${{ inputs.directory }}-PathType container)) { `
-          New-Item -Path ${{ inputs.directory }} -ItemType "directory" `
-        )
+        if (!(Test-Path ${{ inputs.directory }}-PathType container)) {
+          New-Item -Path ${{ inputs.directory }} -ItemType "directory"
+        }
 
     # Download and expand the IDE
     - name: Download the IDE
@@ -34,11 +34,11 @@ runs:
       shell: pwsh
       run: |
         $Hash=$(Get-FileHash -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_ZIP" -Algorithm sha256)
-        if ($Hash.hash -ne $env:IDE_HASH) `
-        { `
-          Write-Warning "IDE hash has changed implying IDE update!" `
-          Write-Warning "Expected sha256: $env:IDE_HASH" `
-          Write-Warning "Actual sha256:   $(Out-String -InputObject $Hash.hash)" `
+        if ($Hash.hash -ne $env:IDE_HASH)
+        {
+          Write-Warning "IDE hash has changed implying IDE update!"
+          Write-Warning "Expected sha256: $env:IDE_HASH"
+          Write-Warning "Actual sha256:   $(Out-String -InputObject $Hash.hash)"
         }
 
     - name: List IDE
@@ -61,10 +61,10 @@ runs:
       shell: pwsh
       run: |
         $exes=Get-ChildItem -Path $env:TEMP\IDE\telink*.exe | Select FullName
-        if ($exes.count > 1) { `
-          Write-Error "Multiple executables were found that could be IDE installers" `
-          Get-ChildItem -Path "$env:TEMP\IDE\telink*.exe `
-          exit 1 `
+        if ($exes.count > 1) {
+          Write-Error "Multiple executables were found that could be IDE installers"
+          Get-ChildItem -Path "$env:TEMP\IDE\telink*.exe
+          exit 1
         }
         $version="unknown"
         if ($exes[0].FullName -match '(v\d+\.\d+\.\d+)') { `
