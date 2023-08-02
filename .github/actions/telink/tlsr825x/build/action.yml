@@ -1,53 +1,28 @@
-name: 'Install Telink Zigbee SDK'
+name: 'Build a Telink tlsr825x project'
 description: 'Install the Zigbee SDK required to build Telink tlsr825x projects'
 inputs:
-  directory:
-    description: 'Directory into which to install the Zigbee SDK'
-    default: 'c:\telink\zigbee-sdk'
-env:
-  SDK_DIR: sdk
-  SDK_URI: "http://wiki.telink-semi.cn/tools_and_sdk/Zigbee/Zigbee_SDK.zip"
-  SDK_ZIP: Zigbee_SDK.zip
-  SDK_HASH: "AD3C28FC2A50E9D550B933335FD96CE2A58EECDD602DEB451FCC54087947E01C"
+  ide:
+    description: Location of the Telink IDE
+    default: c:\telink\ide
+  zigbee_sdk:
+    description: Location of the Telink Zigbee SDK
+    default: c:\telink\zigbee_sdk
+  project:
+    description: tlsr825x project to build
+    default: sampleGW_8258
+  board:
+    description: tlsr825x board to target
+    default:
 
 runs:
   using: "composite"
   steps:
-    # Create the required directories.
-    - name: Create target directory
+    - name: Build TLSR8258 ZigBee image
+      shell: pwsh
       run: |
-        if (!(Test-Path ${{ inputs.directory }}-PathType container)) {
-          New-Item -Path ${{ input.directory }} -ItemType "directory"
-        )
-
-    # Download and expand the SDK.
-    - name: Download the Zigbee SDK
-      run: Invoke-RestMethod -Method GET -FollowRelLink -Uri "$env:SDK_URI" -OutFile "$env:TEMP\$env:SDK_ZIP"
-
-    # Validate that the Zigbee SDK has not changed.
-    - name: Check SDK hash/version
-      run: |
-        $Hash=$(Get-FileHash -Path "$env:TEMP\$env:SDK_ZIP" -Algorithm sha256)
-        if ($Hash.hash -ne $env:SDK_HASH)
-        {
-          Write-Warning "Zigbee SDK hash has changed implying Zigbee SDK update!"
-          Write-Warning "Expected sha256: $env:SDK_HASH"
-          Write-Warning "Actual sha256:   $(Out-String -InputObject $Hash.hash)"
-        }
-
-    - name: Unzip the SDK
-      run: Expand-Archive -Path "$env:TEMP\$env:SDK_ZIP" -DestinationPath "$input.directory"
-
-    - name: Delete SDK Zipfile
-      run: Remove-Item -Path "$env:TEMP\$env:SDK_ZIP"
-
-    - name: List SDK
-      run: Get-ChildItem -Path "$input.directory"
-      # -name: Build TLSR8258 ZigBee image
-      #  run: |
-      #   eclipsec `
-      #   -vm c:\Users\PDS\TelinkSDK\jre\bin\client `
-      #   -noSplash `
-      #   -application org.eclipse.cdt.managedbuilder.core.headlessbuild  `
-      #   -data "$env:DRIVE\$env:TLSR825X\$env:SDK_DIR\tlsr_tc32" `
-      #   -build tl_zigbee_sdk/sampleGW_8258
+        eclipsec `
+        -vm "$input.ide\jre\bin\client" `
+        -noSplash `
+        -application org.eclipse.cdt.managedbuilder.core.headlessbuild  `
+        -data "$input.zigbee_sdk\tlsr_tc32" `
+        -build "$input.zigbee_sdk/$input.project"

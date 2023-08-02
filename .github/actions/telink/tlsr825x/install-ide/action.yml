@@ -18,6 +18,7 @@ runs:
   steps:
     # Create the required directories.
     - name: Create target directoryTLSR825x base directory
+      shell: pwsh
       run: |
         if (!(Test-Path ${{ inputs.directory }}-PathType container)) {
           New-Item -Path ${{ input.directory }} -ItemType "directory"
@@ -25,10 +26,12 @@ runs:
 
     # Download and expand the IDE
     - name: Download the IDE
+      shell: pwsh
       run: Invoke-RestMethod -Method GET -FollowRelLink -Uri "$env:IDE_URI" -OutFile "$env:TEMP\$env:IDE_ZIP"
 
     # Validate that the IDE has not changed.
     - name: Check IDE hash/version
+      shell: pwsh
       run: |
         $Hash=$(Get-FileHash -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_ZIP" -Algorithm sha256)
         if ($Hash.hash -ne $env:IDE_HASH)
@@ -39,18 +42,23 @@ runs:
         }
 
     - name: List IDE
+      shell: pwsh
       run: Get-ChildItem -Path "$env:DRIVE\$env:TLSR825X" -Recurse
 
     # Note that the IDE has a path "IDE" baked into it.
     - name: Unzip the IDE
+      shell: pwsh
       run: Expand-Archive -Path "$env:TEMP\$env:IDE_ZIP" -DestinationPath "$env:TEMP"
     - name: Delete IDE Zipfile
+      shell: pwsh
       run: Remove-Item -Path "$env:TEMP\$env:IDE_ZIP"
 
     - name: List IDE
+      shell: pwsh
       run: Get-ChildItem -Path "$env:TEMP\IDE" -Recurse
 
     - name: Report the IDE version and spot multiple unexpected EXEs.
+      shell: pwsh
       run: |
         $exes=Get-ChildItem -Path $env:TEMP\IDE\telink*.exe | Select FullName
         if ($exes.count > 1) {
@@ -66,10 +74,12 @@ runs:
 
     # Note the strange single-quote syntax required for the call operator.
     - name: Install the IDE
+      shell: pwsh
       run: |
         $exes=Get-ChildItem -Path "$env:TEMP\IDE\telink*.exe"
         '& $exes[0].FullName /VERYSILENT /SUPPRESSMSGBOXES /DIR=$input.directory /NOICONS /LOG=$env:TEMP\install.log'
         Get-Content -Path "$env:DRIVE\$env:TLSR825X\$env:IDE_DIR\IDE\install.log"
 
     - name: List IDE
+      shell: pwsh
       run: Get-ChildItem -Path "$input.directory"

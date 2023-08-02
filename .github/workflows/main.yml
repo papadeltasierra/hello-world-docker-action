@@ -21,5 +21,7 @@ jobs:
       - uses: actions/checkout@v3
       - id: install-ide
         uses: ./.github/actions/telink/tlsr825x/install-ide
-        with:
-          directory: c:\telink\ide
+      - id: install-zigbee-sdk
+        uses: ./.github/actions/telink/tlsr825x/install-zigbee-sdk
+      - id: build-tlsr825x-project
+        uses: ./.github/actions/telink/tlsr825x/build
