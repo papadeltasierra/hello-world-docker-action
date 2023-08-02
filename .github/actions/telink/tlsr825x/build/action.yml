@@ -1,5 +1,5 @@
 name: 'Build a Telink tlsr825x project'
-description: 'Install the Zigbee SDK required to build Telink tlsr825x projects'
+description: 'Install the Telink IDE, Zigbee SDK and the build a tlsr825x project'
 inputs:
   ide:
     description: Location of the Telink IDE
