@@ -73,7 +73,7 @@ runs:
         Get-ChildItem -Path "$env:TEMP\IDE\telink*.exe"
         $exes=Get-ChildItem -Path "$env:TEMP\IDE\telink*.exe"
         $exes[0].FullName
-        '& $exes[0].FullName /VERYSILENT /SUPPRESSMSGBOXES /DIR=$inputs.directory /NOICONS /LOG=$env:TEMP\install.log' -RunAsAdmin
+        Start-Process -RunAs -Filepath $exes[0].FullName -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /DIR=$inputs.directory /NOICONS /LOG=$env:TEMP\install.log"
         Get-Content -Path "$env:TEMP\install.log"
 
     - name: List IDE
