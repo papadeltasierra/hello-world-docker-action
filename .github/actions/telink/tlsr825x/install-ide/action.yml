@@ -80,3 +80,8 @@ runs:
         Get-Content -Path $env:TEMP\stdout.txt
         Write-Information "STDERR from the installer..." -InformationAction:Continue
         Get-Content -Path $env:TEMP\stderr.txt
+        Remove-Item -Path $env:TEMP\stdout.txt
+        Remove-Item -Path $env:TEMP\stderr.txt
+        # List the top-level to really confirm that we were installed.
+        Write-Information "Directories/files in ${{ inputs.directory }}..." -InformationAction:Continue
+        Get-ChildItem ${{ inputs.directory }}
