@@ -15,7 +15,7 @@ inputs:
     default:
 
 env:
-  WORKSPACES: "${{ inputs.zigbee_sdk }}\tl_zigbee_sdk\build"
+  WORKSPACES: "tl_zigbee_sdk\build"
   PROJECT_ROOT: "tlsr_tc32"
 
 runs:
@@ -34,7 +34,7 @@ runs:
             ""${{ inputs.ide }}\jre\bin\client"" `
             -noSplash `
             -application org.eclipse.cdt.managedbuilder.core.headlessbuild `
-            -data ""$env:WORKSPACES"" `
+            -data ""${{ inputs.zigbee_sdk }}\$env:WORKSPACES"" `
             -build ""$env:PROJECT_ROOT/${{ inputs.project }}""" `
           -NoNewWindow `
           -RedirectStandardOutput $env:TEMP\stdout.txt `
@@ -47,12 +47,35 @@ runs:
         Get-Content -Path $env:TEMP\stdout.txt
         Write-Information "STDERR from the installer..." -InformationAction:Continue
         Get-Content -Path $env:TEMP\stderr.txt
+        # Capture first line of errors to test later.
+        $stderr = $(Get-Content  -Path $env:TEMP\stderr.txt -First 1)
         Remove-Item -Path $env:TEMP\stdout.txt
         Remove-Item -Path $env:TEMP\stderr.txt
-        if ($proc.ExitCode -ne 0) {
+
+        # Builds worked it all of the following are true:
+        # - ExitCode is zero (0)
+        # - stderr log output is empty
+        # - an 'elf' image has been created
+        if ($proc.ExitCode -ne 0)
+        {
           Write-Error "eclipsec exited with $proc.ExitCode." -ErrorAction:Continue
           exit 1
-        } else {
+        }
+        elseif ($stderr -ne "")
+        {
+          Write-Error "eclipsec reported errors." -ErrorAction:Continue
+          exit 1
+        }
+        elseif ((! $(Test-Path -Path ${{ inputs.zigbee_sdk }}\$env:WORKSPACES\$env:PROJECT_ROOT\${{ inputs.project }}\${{ inputs.project }}.elf) -or
+                (! $(Test-Path -Path ${{ inputs.zigbee_sdk }}\$env:WORKSPACES\$env:PROJECT_ROOT\${{ inputs.project }}\${{ inputs.project }}.bin) -or
+                (! $(Test-Path -Path ${{ inputs.zigbee_sdk }}\$env:WORKSPACES\$env:PROJECT_ROOT\${{ inputs.project }}\${{ inputs.project }}.lst))
+        {
+          Write-Error "eclipsec did not generate all expected files." -ErrorAction:Continue
+          Get-ChildItem -Path "${{ inputs.zigbee_sdk }}\$env:WORKSPACES\$env:PROJECT_ROOT\${{ inputs.project }}\${{ inputs.project }}.*"
+          exit 1
+        }
+        else
+        {
           Write-Information "eclipsec build succeeded." -InformationAction:Continue
         }
 
