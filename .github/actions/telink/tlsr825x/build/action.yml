@@ -14,17 +14,13 @@ inputs:
     description: tlsr825x board to target
     default:
 
+env:
+  WORKSPACES: "${{ inputs.zigbee_sdk }}\tl_zigbee_sdk\build"
+  PROJECT_ROOT: "tlsr_tc32"
+
 runs:
   using: "composite"
   steps:
-    - name: Find projects
-      shell: pwsh
-      run: |
-        Get-ChildItem -Path "${{ inputs.ide }}\.project" -Recurse
-        Get-ChildItem -Path "${{ inputs.ide }}\.cproject" -Recurse
-        Get-ChildItem -Path "${{ inputs.zigbee_sdk }}\.project" -Recurse
-        Get-ChildItem -Path "${{ inputs.zigbee_sdk }}\.cproject" -Recurse
-
     - name: Build TLSR8258 ZigBee image
       shell: pwsh
       run: |
@@ -33,7 +29,13 @@ runs:
         # Run eclipsec, waiting for it to complte, redirecting output etc.
         $proc=Start-Process `
           -FilePath $eclipsec[0].FullName `
-          -ArgumentList "-vm ""${{ inputs.ide }}\jre\bin\client"" -noSplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ""${{ inputs.zigbee_sdk }}\tlsr_tc32"" -build "tl_zigbee_sdk/"${{ inputs.project }}""" `
+          -ArgumentList `
+            "-vm `
+            ""${{ inputs.ide }}\jre\bin\client"" `
+            -noSplash `
+            -application org.eclipse.cdt.managedbuilder.core.headlessbuild `
+            -data ""$env:WORKSPACES"" `
+            -build ""$env:PROJECT_ROOT/${{ inputs.project }}""" `
           -NoNewWindow `
           -RedirectStandardOutput $env:TEMP\stdout.txt `
           -RedirectStandardError $env:TEMP\stderr.txt `
