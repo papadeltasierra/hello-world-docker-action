@@ -75,9 +75,9 @@ runs:
         $installer=$exes[0].FullName
         $logfile="${env:TEMP}\install.log"
         # Explain this!
-        Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value 00000000 -Force
-        # '& $exes[0].FullName /VERYSILENT /SUPPRESSMSGBOXES /DIR=$inputs.directory /NOICONS /LOG=$env:TEMP\install.log'
-        Start-Process -Verb RunAs -FilePath $installer -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /DIR=${inputs.directory} /NOICONS /LOG=${logfile}"
+        # Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value 00000000 -Force
+        '& $installer /VERYSILENT /SUPPRESSMSGBOXES /DIR=$inputs.directory /NOICONS /LOG="${logfile}"'
+        # Start-Process -Verb RunAs -FilePath $installer -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /DIR=${inputs.directory} /NOICONS /LOG=${logfile}"
         Get-Content -Path $logfile
 
     - name: List IDE
