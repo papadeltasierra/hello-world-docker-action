@@ -76,8 +76,8 @@ runs:
         # Explain this!
         Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value 00000000 -Force
         # '& $exes[0].FullName /VERYSILENT /SUPPRESSMSGBOXES /DIR=$inputs.directory /NOICONS /LOG=$env:TEMP\install.log'
-        Start-Process -Verb RunAs -FilePath "$exes[0].FullName" -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /DIR=$inputs.directory /NOICONS /LOG=$env:TEMP\install.log"
-        Get-Content -Path "$env:TEMP\install.log"
+        Start-Process -Verb RunAs -FilePath "${exes[0].FullName}" -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /DIR=$inputs.directory /NOICONS /LOG=$env:TEMP\install.log"
+        Get-Content -Path "${env:TEMP\install.log}"
 
     - name: List IDE
       shell: pwsh
