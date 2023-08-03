@@ -15,9 +15,10 @@ runs:
   steps:
     # Create the required directories.
     - name: Create target directory
+      shell: pwsh
       run: |
         if (!(Test-Path ${{ inputs.directory }} -PathType container)) {
-          New-Item -Path ${{ input.directory }} -ItemType "directory"
+          New-Item -Path ${{ inputs.directory }} -ItemType "directory"
         }
 
     # Download and expand the SDK.
