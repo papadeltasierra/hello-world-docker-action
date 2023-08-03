@@ -83,5 +83,5 @@ runs:
     - uses: actions/upload-artifact@v3
       with:
         name: tlsr825x-firmware
-        path: "${{ inputs.zigbee_sdk }}\$env:WORKSPACES\$env:PROJECT_ROOT\${{ inputs.project }}\${{ inputs.project }}.*"
+        path: "${{ inputs.zigbee_sdk }}\\$env:WORKSPACES\\$env:PROJECT_ROOT\\${{ inputs.project }}\\${{ inputs.project }}.*"
         retention-days: 1
