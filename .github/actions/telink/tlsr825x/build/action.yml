@@ -17,13 +17,28 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Find projects
+      shell: pwsh
+      run: |
+        Get-ChildItem -Path "${{ inputs.ide }}\.project" -Recurse
+        Get-ChildItem -Path "${{ inputs.ide }}\.cproject" -Recurse
+        Get-ChildItem -Path "${{ inputs.zigbee_sdk }}\.project" -Recurse
+        Get-ChildItem -Path "${{ inputs.zigbee_sdk }}\.cproject" -Recurse
+
     - name: Build TLSR8258 ZigBee image
       shell: pwsh
       run: |
         $eclipsec=Get-ChildItem -Path "${{ inputs.ide }}\eclipsec.exe" -Recurse
         $eclipsec
         # Run eclipsec, waiting for it to complte, redirecting output etc.
-        $proc=Start-Process -FilePath $eclipsec[0].FullName -ArgumentList "-vm ""${{ inputs.ide }}\jre\bin\client"" -noSplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ""${{ inputs.zigbee_sdk }}\tlsr_tc32"" -build ""${{ inputs.project }}""" -NoNewWindow -RedirectStandardOutput $env:TEMP\stdout.txt -RedirectStandardError $env:TEMP\stderr.txt -Wait -PassThru
+        $proc=Start-Process `
+          -FilePath $eclipsec[0].FullName `
+          -ArgumentList "-vm ""${{ inputs.ide }}\jre\bin\client"" -noSplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ""${{ inputs.zigbee_sdk }}\tlsr_tc32"" -build "tl_zigbee_sdk/"${{ inputs.project }}""" `
+          -NoNewWindow `
+          -RedirectStandardOutput $env:TEMP\stdout.txt `
+          -RedirectStandardError $env:TEMP\stderr.txt `
+          -Wait `
+          -PassThru
         Write-Information "eclipsec exit code: $($proc.ExitCode.ToString())" -InformationAction:Continue
         # Display output, especially any errors!
         Write-Information "STDOUT from the installer..." -InformationAction:Continue
@@ -44,4 +59,4 @@ runs:
   #   with:
   #     name: my-artifact
   #     path: my_file.txt
-  #     retention-days: 5        
+  #     retention-days: 5
