@@ -24,18 +24,19 @@ runs:
         $eclipsec
         # Run eclipsec, waiting for it to complte, redirecting output etc.
         $proc=Start-Process -FilePath $eclipsec[0].FullName -ArgumentList "-vm ""${{ inputs.ide }}\jre\bin\client"" -noSplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ""${{ inputs.zigbee_sdk }}\tlsr_tc32"" -build ""${{ inputs.zigbee_sdk }}/${{ inputs.project }}""" -NoNewWindow -RedirectStandardOutput $env:TEMP\stdout.txt -RedirectStandardError $env:TEMP\stderr.txt -Wait -PassThru
+        # Display output, especially any errors!
+        Write-Information "STDOUT from the installer..." -InformationAction:Continue
+        Get-Content -Path $env:TEMP\stdout.txt
+        Write-Information "STDERR from the installer..." -InformationAction:Continue
+        Get-Content -Path $env:TEMP\stderr.txt
+        Remove-Item -Path $env:TEMP\stdout.txt
+        Remove-Item -Path $env:TEMP\stderr.txt
         if ($proc.ExitCode -ne 0) {
           Write-Error "eclipsec exited with $proc.ExitCode." -ErrorAction:Continue
-          Write-Information "STDOUT from the installer..." -InformationAction:Continue
-          Get-Content -Path $env:TEMP\stdout.txt
-          Write-Information "STDERR from the installer..." -InformationAction:Continue
-          Get-Content -Path $env:TEMP\stderr.txt
           exit 1
         } else {
           Write-Information "eclipsec build succeeded." -InformationAction:Continue
         }
-        Remove-Item -Path $env:TEMP\stdout.txt
-        Remove-Item -Path $env:TEMP\stderr.txt
 
   # - name: 'Upload tlsr825x image'
   #   uses: actions/upload-artifact@v3
