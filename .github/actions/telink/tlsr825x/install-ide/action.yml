@@ -77,10 +77,11 @@ runs:
         # Explain this!
         # Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value 00000000 -Force
         '& $installer /VERYSILENT /SUPPRESSMSGBOXES /DIR="${{ inputs.directory }}" /NOICONS /LOG="${logfile}"'
-        # Start-Process -Verb RunAs -FilePath $installer -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /DIR=${{ inputs.directory }} /NOICONS /LOG=${logfile}"
+        # Start-Process -Verb RunAs -FilePath $installer -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /DIR=${{ inputs.directory }} /NOICONS
+        # /LOG=${logfile}"
         Get-ChildItem -Path ${{ inputs.directory }} -Recurse
         # Get-ChildItem -Path "$inputs.directory" -Recurse
-        Get-Content -Path $logfile
+        # Get-Content -Path $logfile
 
     - name: List IDE
       shell: pwsh
