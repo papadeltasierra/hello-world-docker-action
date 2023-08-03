@@ -18,8 +18,8 @@ runs:
     - name: Create target directoryTLSR825x base directory
       shell: pwsh
       run: |
-        if (!(Test-Path ${{ inputs.directory }} -PathType container)) {
-          New-Item -Path ${{ inputs.directory }} -ItemType "directory"
+        if (!(Test-Path $inputs.directory -PathType container)) {
+          New-Item -Path $inputs.directory -ItemType "directory"
         }
 
     # Download and expand the IDE
@@ -78,7 +78,8 @@ runs:
         # Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value 00000000 -Force
         '& $installer /VERYSILENT /SUPPRESSMSGBOXES /DIR="${inputs.directory}" /NOICONS /LOG="${logfile}"'
         # Start-Process -Verb RunAs -FilePath $installer -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /DIR=${inputs.directory} /NOICONS /LOG=${logfile}"
-        Get-ChildItem -Path "${inputs.directory}" -Recurse
+        Get-ChildItem -Path $inputs.directory -Recurse
+        # Get-ChildItem -Path "$inputs.directory" -Recurse
         Get-Content -Path $logfile
 
     - name: List IDE
