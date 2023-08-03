@@ -79,9 +79,9 @@ runs:
           Write-Information "eclipsec build succeeded." -InformationAction:Continue
         }
 
-  - name: 'Upload tlsr825x image'
-    uses: actions/upload-artifact@v3
-    with:
-      name: tlsr825x-firmware
-      path: "${{ inputs.zigbee_sdk }}\$env:WORKSPACES\$env:PROJECT_ROOT\${{ inputs.project }}\${{ inputs.project }}.*"
-      retention-days: 1
+    - name: 'Upload tlsr825x image'
+      uses: actions/upload-artifact@v3
+      with:
+        name: tlsr825x-firmware
+        path: "${{ inputs.zigbee_sdk }}\$env:WORKSPACES\$env:PROJECT_ROOT\${{ inputs.project }}\${{ inputs.project }}.*"
+        retention-days: 1
