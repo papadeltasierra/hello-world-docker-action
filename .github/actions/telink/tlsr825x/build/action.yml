@@ -56,6 +56,7 @@ runs:
         # - ExitCode is zero (0)
         # - stderr log output is empty
         # - an 'elf' image has been created
+        $image_root =
         if ($proc.ExitCode -ne 0)
         {
           Write-Error "eclipsec exited with $proc.ExitCode." -ErrorAction:Continue
@@ -79,8 +80,7 @@ runs:
           Write-Information "eclipsec build succeeded." -InformationAction:Continue
         }
 
-    - name: 'Upload tlsr825x image'
-      uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v3
       with:
         name: tlsr825x-firmware
         path: "${{ inputs.zigbee_sdk }}\$env:WORKSPACES\$env:PROJECT_ROOT\${{ inputs.project }}\${{ inputs.project }}.*"
