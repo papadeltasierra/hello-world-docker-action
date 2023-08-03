@@ -19,8 +19,8 @@ runs:
       shell: pwsh
       run: |
         # Write-Error "Directory is ${inputs.directory}"
-        # Write-Error "Directory is $inputs.directory"
-        Write-Error "Directory is $env:INPUT_DIRECTORY"
+        Write-Information "Directory is $inputs.directory" -InformationAction:Continue
+        # Write-Error "Directory is $env:INPUT_DIRECTORY"
         if (!(Test-Path $inputs.directory -PathType container)) {
           New-Item -Path $inputs.directory -ItemType "directory"
         }
