@@ -36,3 +36,10 @@ runs:
         }
         Remove-Item -Path $env:TEMP\stdout.txt
         Remove-Item -Path $env:TEMP\stderr.txt
+
+  # - name: 'Upload tlsr825x image'
+  #   uses: actions/upload-artifact@v3
+  #   with:
+  #     name: my-artifact
+  #     path: my_file.txt
+  #     retention-days: 5        
