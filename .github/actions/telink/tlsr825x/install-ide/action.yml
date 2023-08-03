@@ -80,8 +80,9 @@ runs:
         '& c:\windows\system32\sort.exe /?'
         '& $sorter /?'
         $installer="$exes[0].FullName /VERYSILENT /SUPPRESSMSGBOXES /DIR=""${{ inputs.directory }}"" /NOICONS' /LOG=""${logfile}"""
-        $installer | Out-File "$env:TEMP\installer.ps1"
-        '& $env:TEMP\installer.ps1'
+        $script="$env:TEMP\installer.ps1"
+        $installer | Out-File "$script"
+        '& $script'
         # Start-Process -Verb RunAs -FilePath $installer -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /DIR=${{ inputs.directory }} /NOICONS
         # /LOG=${logfile}"
         Get-ChildItem -Path ${{ inputs.directory }} -Recurse
