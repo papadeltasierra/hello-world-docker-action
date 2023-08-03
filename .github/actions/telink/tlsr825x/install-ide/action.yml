@@ -18,6 +18,9 @@ runs:
     - name: Create target directoryTLSR825x base directory
       shell: pwsh
       run: |
+        Write-Error "Directory is ${inputs.directory}"
+        Write-Error "Directory is $inputs.directory"
+        Write-Error "Directory is $env:INPUT_DIRECTORY"
         if (!(Test-Path $inputs.directory -PathType container)) {
           New-Item -Path $inputs.directory -ItemType "directory"
         }
