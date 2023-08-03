@@ -76,6 +76,8 @@ runs:
         $logfile="${env:TEMP}\install.log"
         # Explain this!
         # Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value 00000000 -Force
+        $sorter="c:\windowszsystem32\sort.exe"
+        '& $sorter /?'
         '& $installer /VERYSILENT /SUPPRESSMSGBOXES /DIR="${{ inputs.directory }}" /NOICONS'
         # /LOG="${logfile}"'
         # Start-Process -Verb RunAs -FilePath $installer -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /DIR=${{ inputs.directory }} /NOICONS
