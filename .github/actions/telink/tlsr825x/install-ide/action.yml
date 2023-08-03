@@ -18,11 +18,8 @@ runs:
     - name: Create target directoryTLSR825x base directory
       shell: pwsh
       run: |
-        # Write-Error "Directory is ${inputs.directory}"
-        Write-Information "Directory is ${{ inputs.directory }}" -InformationAction:Continue
-        # Write-Error "Directory is $env:INPUT_DIRECTORY"
-        if (!(Test-Path $inputs.directory -PathType container)) {
-          New-Item -Path $inputs.directory -ItemType "directory"
+        if (!(Test-Path ${{ inputs.directory }} -PathType container)) {
+          New-Item -Path ${{ inputs.directory }} -ItemType "directory"
         }
 
     # Download and expand the IDE
@@ -79,12 +76,12 @@ runs:
         $logfile="${env:TEMP}\install.log"
         # Explain this!
         # Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value 00000000 -Force
-        '& $installer /VERYSILENT /SUPPRESSMSGBOXES /DIR="${inputs.directory}" /NOICONS /LOG="${logfile}"'
-        # Start-Process -Verb RunAs -FilePath $installer -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /DIR=${inputs.directory} /NOICONS /LOG=${logfile}"
-        Get-ChildItem -Path $inputs.directory -Recurse
+        '& $installer /VERYSILENT /SUPPRESSMSGBOXES /DIR="${{ inputs.directory }}" /NOICONS /LOG="${logfile}"'
+        # Start-Process -Verb RunAs -FilePath $installer -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /DIR=${{ inputs.directory }} /NOICONS /LOG=${logfile}"
+        Get-ChildItem -Path ${{ inputs.directory }} -Recurse
         # Get-ChildItem -Path "$inputs.directory" -Recurse
         Get-Content -Path $logfile
 
     - name: List IDE
       shell: pwsh
-      run: Get-ChildItem -Path "$inputs.directory"
+      run: Get-ChildItem -Path "${{ inputs.directory }}"
