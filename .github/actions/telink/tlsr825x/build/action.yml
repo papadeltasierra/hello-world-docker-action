@@ -20,7 +20,7 @@ runs:
     - name: Build TLSR8258 ZigBee image
       shell: pwsh
       run: |
-        $eclipsec=Get-ChildItem -Path "$env:TEMP\IDE\eclipsec.exe" -Recurse
+        $eclipsec=Get-ChildItem -Path "${{ inputs.ide }}\eclipsec.exe" -Recurse
         $eclipsec
         # Run eclipsec, waiting for it to complte, redirecting output etc.
         $proc=Start-Process -FilePath $eclipsec[0].FullName -ArgumentList "-vm ""${{ inputs.ide }}\jre\bin\client"" -noSplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data ""${{ inputs.zigbee_sdk }}\tlsr_tc32"" -build ""${{ inputs.zigbee_sdk }}/${{ inputs.project }}""" -NoNewWindow -RedirectStandardOutput $env:TEMP\stdout.txt -RedirectStandardError $env:TEMP\stderr.txt -Wait -PassThru
