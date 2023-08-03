@@ -78,11 +78,11 @@ runs:
         $sorter="c:\windows\system32\sort.exe"
         c:\windows\system32\sort.exe /?
         '& c:\windows\system32\sort.exe /?'
-        $proc=Start-Process -FilePath $sorter -ArgumentList "/?" -NoNewWindow -RedirectStandardOutput $env:TEMP\stdout0.txt -RedirectionStandardError $env:TEMP\stderr0.txt -Wait -PassThru
+        $proc=Start-Process -FilePath $sorter -ArgumentList "/?" -NoNewWindow -RedirectStandardOutput $env:TEMP\stdout0.txt -RedirectStandardError $env:TEMP\stderr0.txt -Wait -PassThru
         Write-Information "Sorted exited with $proc.ExitCode." -InformationAction:Continue
         Get-Content -Path $env:TEMP\stdout0.txt
         Get-Content -Path $env:TEMP\stderr0.txt
-        $proc=Start-Process -FilePath $exes[0].FullName -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /DIR=""${{ inputs.directory }}"" /NOICONS' /LOG=""${logfile}""" -NoNewWindow -RedirectStandardOutput $env:TEMP\stdout.txt -RedirectionStandardError $env:TEMP\stderr.txt -Wait -PassThru
+        $proc=Start-Process -FilePath $exes[0].FullName -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /DIR=""${{ inputs.directory }}"" /NOICONS' /LOG=""${logfile}""" -NoNewWindow -RedirectStandardOutput $env:TEMP\stdout.txt -RedirectStandardError $env:TEMP\stderr.txt -Wait -PassThru
         Write-Information "Installer exited with $proc.ExitCode." -InformationAction:Continue
         Get-Content -Path $env:TEMP\stdout.txt
         Get-Content -Path $env:TEMP\stderr.txt
