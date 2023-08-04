@@ -39,11 +39,13 @@ runs:
           exit 1
         }
         # Passing result to the next step.
-        echo "eclipsec=$eclipsec" >> $env:GITHUB_ENV
+        Write-Info "'$eclipsec[0].FullName' was found."
+        echo "eclipsec=$eclipsec[0].FullName" >> $env:GITHUB_ENV
 
     - name: Build TLSR8258 ZigBee image
       shell: pwsh
       run: |
+        Write-Info "Running build process '$env:eclipsec'..."
         $proc=Start-Process `
           -FilePath $env:eclipsec `
           -ArgumentList `
