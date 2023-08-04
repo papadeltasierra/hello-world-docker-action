@@ -74,11 +74,7 @@ runs:
         else
         {
           # Check exit code.
-          if ($proc.ExitCode -ne 0)
-          {
-            Write-Error "eclipsec exited with $proc.ExitCode." -ErrorAction:Continue
-            exit 1
-          }
+          echo "eclipsec_rc=$proc.ExitCode" >> $env:GUBHUB_ENV
         }
 
     - name: Check for errors and expected files
@@ -101,7 +97,12 @@ runs:
         # - stderr log output is empty
         # - an 'elf' image has been created
         $image_root = ${{ inputs.zigbee_sdk }}\${{ inputs._workspaces }}\${{ inputs._project_root }}\${{ inputs.project }}
-        if ($stderr -ne "")
+        if ($env:eclipsec_rc -ne 0)
+        {
+          Write-Error "eclipsec exited with $proc.ExitCode." -ErrorAction:Continue
+          exit 1
+        }
+        elseif ($stderr -ne "")
         {
           Write-Error "eclipsec reported errors." -ErrorAction:Continue
           exit 1
