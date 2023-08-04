@@ -4,6 +4,10 @@
 # - https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/linux-macos-setup.html
 FROM ubuntu:20.04
 
+# This is required to ensure that tzdata installs based on the defaulted timezone of UTC.
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
+
 # GitHub actions set ENV values instead of ARG values.
 ENV RELEASE=v5.1
 ENV HASH=123456
