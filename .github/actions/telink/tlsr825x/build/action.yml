@@ -48,7 +48,6 @@ runs:
         Write-Information "Running build process '$env:eclipsec'..." -InformationAction Continue
         # Testing time-out after 5 minutes.
         $proc=Start-Process `
-          -WhatIf `
           -FilePath $env:eclipsec `
           -ArgumentList `
             "-vm ""${{ inputs.ide }}\jre\bin\client"" `
