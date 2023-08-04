@@ -16,7 +16,9 @@ ENV DIRNAME=/opt/espressif-idf
 ENV FILEPREFIX=esp-idf-release
 ENV URLPREFIX=https://github.com/espressif/esp-idf/archive/refs/heads/release
 
-# We also add "curl" to the list below because we need it to download the ZIPfile.
+# Also adding:
+# - curl; so we can download the ZIPfile.
+# - unzip; so we can unzip it!
 RUN \
     echo "Installing toolchain prerequisites..." \
     && apt --yes update \
@@ -42,6 +44,8 @@ RUN \
     && echo "Debug 2" \
     && REMOTE_HASH=$(sha256sum ${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip) \
     && echo "Debug 3" \
+    && echo "A:${REMOTE_HASH}A:" \
+    && echo "B:${HASH}:B" \
     && if [[ "${REMOTE_HASH}" != "${HASH}" ]]; \
        then \
            echo "EspressIF ZIPfile hash, '${REMOTE_HASH}',' has changed!"; \
