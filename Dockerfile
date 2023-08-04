@@ -31,12 +31,13 @@ RUN \
     echo "Downloading the EspressIF IDE..." \
     && ESPTEMP=$(mktemp espressif.XXXXXX) \
     && echo "Temporary download directory: ${ESPTEMP}." \
-    && pushd ${ESTEMP} \
+    && PUSHD=$pwd \
+    && cd ${ESPTEMP} \
     && curl \
         --location \
         --output ${FILEPREFIX}-${RELEASE}.zip \
         ${URLPREFIX}/$RELEASE.zip \
-    && popd \
+    && cd ${PUSHD} \
     && REMOTE_HASH=$(sha256sum ${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip) \
     && if [[ "${REMOTE_HASH}" != "${HASH}" ]]; \
        then \
