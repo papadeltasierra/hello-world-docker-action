@@ -65,7 +65,9 @@ RUN \
 RUN \
     echo "Installing the EspressIF IDF tools..." \
     && PUSHD=$PWD \
-    && cd ${DIRNAME}/esp/esp-idf \
+    && echo "Basedir: ${DIRNAME}" \
+    && ls -lsap "${DIRNAME}" \
+    && cd "${DIRNAME}/esp/esp-idf" \
     && ./install.sh esp32 \
-    && cd ${PUSHD} \
+    && cd "${PUSHD}" \
     && echo "Done."
