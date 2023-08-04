@@ -47,6 +47,7 @@ runs:
       run: |
         Write-Information "Running build process '$env:eclipsec'..." -InformationAction Continue
         $proc=Start-Process `
+          -WhatIf `
           -FilePath $env:eclipsec `
           -ArgumentList `
             "-vm `
