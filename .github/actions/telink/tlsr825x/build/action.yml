@@ -62,7 +62,7 @@ runs:
           -PassThru
 
         # Time out of 5 minutes.
-        $timedout = null
+        $timedout = $null
         Wait-Process -InputObject $proc -Timeout 300 -ErrorAction SilentlyContinue -ErrorVariable timedout
 
         if ($timedout)
