@@ -29,7 +29,7 @@ RUN \
 # Note the need for the semi-colons in the 'if' test below.
 RUN \
     echo "Downloading the EspressIF IDE..." \
-    && ESPTEMP=/tmp/$(mktemp espressif.XXXXXX) \
+    && ESPTEMP=$(mktemp espressif.XXXXXX) \
     && echo "Temporary download directory: ${ESPTEMP}." \
     && PUSHD=$pwd \
     && cd ${ESPTEMP} \
