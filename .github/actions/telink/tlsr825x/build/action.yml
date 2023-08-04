@@ -1,5 +1,6 @@
 name: 'Build a Telink tlsr825x project'
 description: 'Install the Telink IDE, Zigbee SDK and the build a tlsr825x project'
+
 inputs:
   ide:
     description: Location of the Telink IDE
@@ -12,12 +13,17 @@ inputs:
     default: sampleGW_8258
   board:
     description: tlsr825x board to target
-    default:
-
-env:
-  WORKSPACES: "tl_zigbee_sdk\build"
-  PROJECT_ROOT: "tlsr_tc32"
-  EXTENSIONS: "bin,elf,lst"
+    default: unused
+  # Cannot set environment variables so use defaults prefixed with '_'
+  _workspaces:
+    description: Relative path to workspaces below the ZigBee SDK
+    default: "tl_zigbee_sdk\build"
+  _project_root:
+    description: Relative path to projects below the workspaces
+    default: "tlsr_tc32"
+  _extensions:
+    description: File extensions of expected output from the build step
+    default: "bin,elf,lst"
 
 runs:
   using: "composite"
@@ -44,8 +50,8 @@ runs:
             ""${{ inputs.ide }}\jre\bin\client"" `
             -noSplash `
             -application org.eclipse.cdt.managedbuilder.core.headlessbuild `
-            -data ""${{ inputs.zigbee_sdk }}\$env:WORKSPACES"" `
-            -build ""$env:PROJECT_ROOT/${{ inputs.project }}""" `
+            -data ""${{ inputs.zigbee_sdk }}\${{ inputs._workspaces }}"" `
+            -build ""${{ inputs._project_root }}/${{ inputs.project }}""" `
           -NoNewWindow `
           -RedirectStandardOutput $env:TEMP\stdout.txt `
           -RedirectStandardError $env:TEMP\stderr.txt `
@@ -61,14 +67,15 @@ runs:
 
     - name: Check for errors and expected files
       shell: pwsh
-      run:
+      run: |
         # Display output, especially any errors!
-        Write-Information "STDOUT from the installer..." -InformationAction:Continue
+        Write-Information "STDOUT from the installer..." -InformationAction Continue
         Get-Content -Path $env:TEMP\stdout.txt
-        Write-Information "STDERR from the installer..." -InformationAction:Continue
+        Write-Information "STDERR from the installer..." -InformationAction Continue
         Get-Content -Path $env:TEMP\stderr.txt
 
         # Capture first line of errors to test later.
+        Get-Content  -Path $env:TEMP\stderr.txt -First 1
         $stderr=Get-Content  -Path $env:TEMP\stderr.txt -First 1
         Remove-Item -Path $env:TEMP\stdout.txt
         Remove-Item -Path $env:TEMP\stderr.txt
@@ -77,7 +84,7 @@ runs:
         # - ExitCode is zero (0) (checked above)
         # - stderr log output is empty
         # - an 'elf' image has been created
-        $image_root = ${{ inputs.zigbee_sdk }}\$env:WORKSPACES\$env:PROJECT_ROOT\${{ inputs.project }}
+        $image_root = ${{ inputs.zigbee_sdk }}\${{ inputs._workspaces }}\${{ inputs._project_root }}\${{ inputs.project }}
         if ($stderr -ne "")
         {
           Write-Error "eclipsec reported errors." -ErrorAction:Continue
@@ -85,7 +92,7 @@ runs:
         }
 
         # See if we have all the expected files.
-        $extensions = $env:EXTENSIONS.split(",")
+        $extensions = ${{ inputs._extensions }}.split(",")
         $missing = $False
         foreach $ext in $extensions
         {
@@ -110,5 +117,5 @@ runs:
         name: tlsr825x-firmware
         # Note that this is REGEX and not a Powershell statement so the '$'s have to escaped to avoid them being
         # identified as "end of string".
-        path: "${{ inputs.zigbee_sdk }}\\$env:WORKSPACES\\$env:PROJECT_ROOT\\${{ inputs.project }}\\${{ inputs.project }}.*"
+        path: "${{ inputs.zigbee_sdk }}\\${{ inputs._workspaces }}\\${{ inputs._project_root }}\\${{ inputs.project }}\\${{ inputs.project }}.*"
         retention-days: 1
