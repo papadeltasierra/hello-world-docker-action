@@ -109,7 +109,7 @@ runs:
         # See if we have all the expected files.
         $extensions = "${{ inputs._extensions }}".split(",")
         $missing = $False
-        foreach $ext in $extensions
+        foreach ($ext in $extensions)
         {
           if (! $(Test-Path -Path $image_root\${{ inputs.project }}.$ext))
           {
