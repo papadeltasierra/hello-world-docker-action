@@ -24,6 +24,7 @@ RUN \
         python3-venv cmake ninja-build ccache \
         libffi-dev libssl-dev dfu-util libusb-1.0-0
 
+# Note the need for the semi-colons in the 'if' test below.
 RUN \
     echo "Downloading the EspressIF IDE..." \
     && ESPTEMP=$(mktemp espressif.XXXXXX) \
@@ -34,10 +35,10 @@ RUN \
         --output ${FILEPREFIX}-${RELEASE}.zip \
         ${URLPREFIX}/$RELEASE.zip \
     && REMOTE_HASH=$(sha256sum ${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip) \
-    && if [[ "${REMOTE_HASH}" != "${HASH}" ]] \
+    && if [[ "${REMOTE_HASH}" != "${HASH}" ]]; \
        then \
-           echo "EspressIF ZIPfile hash has changed!" \
-           exit 1 \
+           echo "EspressIF ZIPfile hash has changed!"; \
+           exit 1; \
        fi
 
 RUN \
