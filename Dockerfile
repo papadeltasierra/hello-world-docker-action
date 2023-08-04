@@ -11,9 +11,9 @@ ENV TZ=Etc/UTC
 # This allows us to pass a value between RUN steps.
 ARG ESPTEMP=""
 
-# GitHub actions can only pass ENV values to the build.
-ENV RELEASE
-ENV HASH
+# Currently don't know how to pass this in :-(.
+ENV RELEASE=v5.1
+ENV HASH=2d1fe74b50f8e351ebf307490e71e14a3753463b4bb060e26567c0849a586a10
 
 ENV DIRNAME=/opt/espressif-idf
 ENV FILEPREFIX=esp-idf-release
