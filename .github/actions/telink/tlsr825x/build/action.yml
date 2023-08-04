@@ -17,6 +17,7 @@ inputs:
 env:
   WORKSPACES: "tl_zigbee_sdk\build"
   PROJECT_ROOT: "tlsr_tc32"
+  EXTENSIONS: "bin,elf,lst"
 
 runs:
   using: "composite"
@@ -66,6 +67,7 @@ runs:
         Get-Content -Path $env:TEMP\stdout.txt
         Write-Information "STDERR from the installer..." -InformationAction:Continue
         Get-Content -Path $env:TEMP\stderr.txt
+
         # Capture first line of errors to test later.
         $stderr = $(Get-Content  -Path $env:TEMP\stderr.txt -First 1)
         Remove-Item -Path $env:TEMP\stdout.txt
@@ -81,18 +83,27 @@ runs:
           Write-Error "eclipsec reported errors." -ErrorAction:Continue
           exit 1
         }
-        elseif (((! $(Test-Path -Path $image_root\${{ inputs.project }}.elf)) -or
-                ((! $(Test-Path -Path $image_root\${{ inputs.project }}.bin)) -or
-                ((! $(Test-Path -Path $image_root\${{ inputs.project }}.lst)))
+
+        # See if we have all the expected files.
+        $extensions = $env:EXTENSIONS.split(",")
+        $missing = $False
+        foreach $ext in $extensions
         {
-          Write-Error "eclipsec did not generate all expected files." -ErrorAction:Continue
-          Get-ChildItem -Path "$image_root\${{ inputs.project }}.*"
-          exit 1
+          if (! $(Test-Path -Path $image_root\${{ inputs.project }}.$ext))
+          {
+            Write-Error "Expected output file '$image_root\${{ inputs.project }}.$ext' not found." -ErrorAction:Continue
+            $missing = $True
+          }
         }
-        else
+
+        if ($missing)
         {
-          Write-Information "eclipsec build succeeded." -InformationAction:Continue
+            Write-Error "Build has failed." -ErrorAction:Continue
+            exit 1
         }
+
+        # Get here and we have succeeded.
+        Write-Information "eclipsec build succeeded." -InformationAction:Continue
 
     - uses: actions/upload-artifact@v3
       with:
