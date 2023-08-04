@@ -8,6 +8,9 @@ FROM ubuntu:20.04
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
+# This allows us to pass a value between RUN steps.
+ARG ESPTEMP=""
+
 # GitHub actions set ENV values instead of ARG values.
 ENV RELEASE=v5.1
 ENV HASH=123456
