@@ -69,7 +69,7 @@ runs:
         Get-Content -Path $env:TEMP\stderr.txt
 
         # Capture first line of errors to test later.
-        $stderr = $(Get-Content  -Path $env:TEMP\stderr.txt -First 1)
+        $stderr=Get-Content  -Path $env:TEMP\stderr.txt -First 1
         Remove-Item -Path $env:TEMP\stdout.txt
         Remove-Item -Path $env:TEMP\stderr.txt
 
