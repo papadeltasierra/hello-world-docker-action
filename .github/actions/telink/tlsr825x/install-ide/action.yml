@@ -57,7 +57,7 @@ runs:
         $exes=Get-ChildItem -Path $env:TEMP\IDE\telink*.exe | Select FullName
         if ($exes.count > 1) {
           Write-Error "Multiple executables were found that could be IDE installers" -ErrorAction:Continue
-          Get-ChildItem -Path "$env:TEMP\IDE\telink*.exe"
+          Get-ChildItem -Path "$env:TEMP\IDE\telink*.exe" | Select FullName
           exit 1
         }
         $version="unknown"
