@@ -17,7 +17,7 @@ inputs:
   # Cannot set environment variables so use defaults prefixed with '_'
   _workspaces:
     description: Relative path to workspaces below the ZigBee SDK
-    default: "tl_zigbee_sdk\\build\\tlsc_tc32"
+    default: "tl_zigbee_sdk\\build\\tlsr_tc32"
   _project_root:
     description: Relative path to projects below the workspaces
     default: "tl_zigbee_sdk"
