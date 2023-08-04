@@ -39,28 +39,28 @@ RUN \
     && ESPTEMP=$(mktemp --directory espressif.XXXXXX) \
     && echo "Temporary download directory: ${ESPTEMP}." \
     && PUSHD=${PWD} \
-    && cd ${ESPTEMP} \
+    && cd "${ESPTEMP}" \
     && curl \
         --location \
-        --output ${FILEPREFIX}-${RELEASE}.zip \
-        ${URLPREFIX}/${RELEASE}.zip \
+        --output "${FILEPREFIX}-${RELEASE}.zip" \
+        "${URLPREFIX}/${RELEASE}.zip" \
     && echo "Debug 1" \
-    && cd ${PUSHD} \
+    && cd "${PUSHD}" \
     && echo "Debug 2" \
-    && REMOTE_HASH=$(sha256sum ${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip) \
+    && REMOTE_HASH=$(sha256sum "${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip") \
     && echo "Debug 3" \
     && echo "A:${REMOTE_HASH}A:" \
     && echo "B:${HASH}:B" \
-    && if [[ "${REMOTE_HASH}" != "${HASH}" ]]; \
+    && if [ "${REMOTE_HASH}" != "${HASH}" ]; \
        then \
            echo "EspressIF ZIPfile hash, '${REMOTE_HASH}',' has changed!"; \
            exit 1; \
        fi \
     && echo "Extracting the EspressIF IDE..." \
-    && mkdir --parents ${DIRNAME} \
-    && unzip ${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip --directory ${DIRNAME} \
+    && mkdir --parents "${DIRNAME}" \
+    && unzip "${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip" --directory "${DIRNAME}" \
     && echo "Deleting the temporary ZIPfile and directory..." \
-    && rm --force --recursive ${ESPTEMP}
+    && rm --force --recursive "${ESPTEMP}"
 
 RUN \
     echo "Installing the EspressIF IDF tools..." \
