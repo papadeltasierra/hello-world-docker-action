@@ -40,7 +40,7 @@ runs:
       shell: pwsh
       run: |
         $Hash=$(Get-FileHash -Path "$env:TEMP\${{ inputs._zip }}" -Algorithm sha256)
-        if ($Hash.hash -ne ${{ inputs._hash }})
+        if ($Hash.hash -ne "${{ inputs._hash }}")
         {
           Write-Warning "Zigbee SDK hash has changed implying Zigbee SDK update!"
           Write-Warning "Expected sha256: ${{ inputs._hash }}"
