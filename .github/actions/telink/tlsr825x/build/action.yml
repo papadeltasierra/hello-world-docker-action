@@ -49,12 +49,13 @@ runs:
         # Testing time-out after 5 minutes.
         $proc=Start-Process `
           -FilePath $env:eclipsec `
-          -ArgumentList "-vm ""${{ inputs.ide }}\jre\bin\client""" `
-          -ArgumentList "-noSplash" `
-          -ArgumentList "-application org.eclipse.cdt.managedbuilder.core.headlessbuild" `
-          -ArgumentList "-import ""${{ inputs.zigbee_sdk }}\${{ inputs._workspaces }}""" `
-          -ArgumentList "-build ""${{ inputs._project_root }}/${{ inputs.project }}""" `
-          -ArgumentList "--launcher.suppressErrors" `
+          -ArgumentList `
+            "-vm", """${{ inputs.ide }}\jre\bin\client""", `
+            "-noSplash", `
+            "-application", "org.eclipse.cdt.managedbuilder.core.headlessbuild", `
+            "-import", """${{ inputs.zigbee_sdk }}\${{ inputs._workspaces }}""", `
+            "-build", """${{ inputs._project_root }}/${{ inputs.project }}""", `
+            "--launcher.suppressErrors" `
           -NoNewWindow `
           -RedirectStandardOutput $env:TEMP\stdout.txt `
           -RedirectStandardError $env:TEMP\stderr.txt `
