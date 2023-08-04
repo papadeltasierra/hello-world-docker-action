@@ -58,17 +58,14 @@ RUN \
        fi \
     && echo "Extracting the EspressIF IDE..." \
     && mkdir --parents "${DIRNAME}" \
-    && unzip "${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip" -d "${DIRNAME}" \
+    && unzip  -q -d "${DIRNAME}" "${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip" \
     && echo "Deleting the temporary ZIPfile and directory..." \
     && rm --force --recursive "${ESPTEMP}"
 
 RUN \
     echo "Installing the EspressIF IDF tools..." \
     && PUSHD=$PWD \
-    && echo "Basedir: ${DIRNAME}" \
-    && ls -lsap "${DIRNAME}" \
-    && find "${DIRNAME}" -name install.sh \
-    && cd "${DIRNAME}/${FILEPREFIX}-${RELEASE}/esp/esp-idf" \
+    && cd "${DIRNAME}/${FILEPREFIX}-${RELEASE}" \
     && ./install.sh esp32 \
     && cd "${PUSHD}" \
     && echo "Done."
