@@ -32,6 +32,8 @@ RUN \
         curl unzip
 
 # Note the need for the semi-colons in the 'if' test below.
+# Also note that we cannot pass ESPTEMP between steps so we have to merge them
+# here :-(.
 RUN \
     echo "Downloading the EspressIF IDE..." \
     && ESPTEMP=$(mktemp --directory espressif.XXXXXX) \
@@ -53,10 +55,8 @@ RUN \
        then \
            echo "EspressIF ZIPfile hash, '${REMOTE_HASH}',' has changed!"; \
            exit 1; \
-       fi
-
-RUN \
-    echo "Extracting the EspressIF IDE..." \
+       fi \
+    && echo "Extracting the EspressIF IDE..." \
     && mkdir --parents ${DIRNAME} \
     && unzip ${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip --directory ${DIRNAME} \
     && echo "Deleting the temporary ZIPfile and directory..." \
