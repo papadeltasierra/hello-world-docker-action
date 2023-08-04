@@ -68,7 +68,7 @@ runs:
         if ($timedout)
         {
           Write-Information "'eclipsec' timed-out before completing." -InformationAction Continue
-          proc.Kill()
+          $proc.Kill()
         }
         else
         {
