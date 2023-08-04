@@ -8,7 +8,7 @@ inputs:
     default: v5.1
   hash:
     description: integrity hash (sha256) of the ESP-IDF download.
-    default: "1234"
+    default: "2d1fe74b50f8e351ebf307490e71e14a3753463b4bb060e26567c0849a586a10"
 
 runs:
   using: 'docker'

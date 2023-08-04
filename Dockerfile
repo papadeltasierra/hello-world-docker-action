@@ -47,7 +47,7 @@ RUN \
     && echo "Debug 1" \
     && cd "${PUSHD}" \
     && echo "Debug 2" \
-    && REMOTE_HASH=$(sha256sum "${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip") \
+    && REMOTE_HASH=$(sha256sum "${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip" | cut -d " " -f 1 ) \
     && echo "Debug 3" \
     && echo "A:${REMOTE_HASH}A:" \
     && echo "B:${HASH}:B" \
