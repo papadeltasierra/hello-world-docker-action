@@ -96,12 +96,16 @@ runs:
         # - stderr log output is empty
         # - an 'elf' image has been created
         $image_root = "${{ inputs.zigbee_sdk }}\${{ inputs._workspaces }}\${{ inputs._project_root }}\${{ inputs.project }}"
-        if ($env:eclipsec_rc -ne 0)
-        {
-          Write-Error "eclipsec exited with $proc.ExitCode." -ErrorAction:Continue
-          exit 1
-        }
-        elseif ($stderr -ne "")
+
+        # Appears that the compiler exits with status 1 for success!
+        # if ($env:eclipsec_rc -ne 0)
+        # {
+        #   Write-Error "eclipsec exited with $proc.ExitCode." -ErrorAction:Continue
+        #   exit 1
+        # }
+        # elseif ($stderr -ne "")
+
+        if ($stderr -ne "")
         {
           Write-Error "eclipsec reported errors." -ErrorAction:Continue
           exit 1
