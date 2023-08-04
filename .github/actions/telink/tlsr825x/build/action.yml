@@ -33,6 +33,7 @@ runs:
       run: |
         $eclipsec=Get-ChildItem -Path "${{ inputs.ide }}\eclipsec.exe" -Recurse | Select FullName
         if ($eclipsec.count > 1)
+        {
           Write-Error "Multiple instances of 'eclipsec' were found." -ErrorAction:Continue
           Get-ChildItem -Path "${{ inputs.ide }}\eclipsec.exe" -Recurse | Select FullName
           exit 1
