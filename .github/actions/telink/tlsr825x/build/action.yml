@@ -46,6 +46,7 @@ runs:
       shell: pwsh
       run: |
         Write-Information "Running build process '$env:eclipsec'..." -InformationAction Continue
+        # Testing time-out after 5 minutes.
         $proc=Start-Process `
           -FilePath $env:eclipsec `
           -ArgumentList `
@@ -58,14 +59,25 @@ runs:
           -NoNewWindow `
           -RedirectStandardOutput $env:TEMP\stdout.txt `
           -RedirectStandardError $env:TEMP\stderr.txt `
-          -Wait `
           -PassThru
 
-        # Check exit code.
-        if ($proc.ExitCode -ne 0)
+        # Time out of 5 minutes.
+        $timedout = null
+        Wait-Process -InputObject $proc -Timeout 300 -ErrorAction SilentlyContinue -ErrorVariable timedout
+
+        if ($timedout)
         {
-          Write-Error "eclipsec exited with $proc.ExitCode." -ErrorAction:Continue
-          exit 1
+          Write-Information "'eclipsec' timed-out before completing." -InformationAction Continue
+          proc.Kill()
+        }
+        else
+        {
+          # Check exit code.
+          if ($proc.ExitCode -ne 0)
+          {
+            Write-Error "eclipsec exited with $proc.ExitCode." -ErrorAction:Continue
+            exit 1
+          }
         }
 
     - name: Check for errors and expected files
