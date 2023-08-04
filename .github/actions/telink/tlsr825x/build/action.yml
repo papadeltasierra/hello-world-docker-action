@@ -53,10 +53,10 @@ runs:
           -ArgumentList `
             "-vm ""${{ inputs.ide }}\jre\bin\client"" `
             -noSplash `
-            --launcher.suppressErrors `
             -application org.eclipse.cdt.managedbuilder.core.headlessbuild `
-            -importAll ""${{ inputs.zigbee_sdk }}\${{ inputs._workspaces }}"" `
-            -build ""${{ inputs._project_root }}/${{ inputs.project }}""" `
+            -import ""${{ inputs.zigbee_sdk }}\${{ inputs._workspaces }}"" `
+            -build ""${{ inputs._project_root }}/${{ inputs.project }}"" `
+            --launcher.suppressErrors" `
           -NoNewWindow `
           -RedirectStandardOutput $env:TEMP\stdout.txt `
           -RedirectStandardError $env:TEMP\stderr.txt `
