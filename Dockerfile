@@ -26,7 +26,7 @@ RUN \
         wget flex bison gperf python3 python3-pip \
         python3-venv cmake ninja-build ccache \
         libffi-dev libssl-dev dfu-util libusb-1.0-0 \
-        curl
+        curl unzip
 
 # Note the need for the semi-colons in the 'if' test below.
 RUN \
