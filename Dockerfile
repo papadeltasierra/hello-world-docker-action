@@ -31,7 +31,7 @@ RUN \
     echo "Downloading the EspressIF IDE..." \
     && ESPTEMP=$(mktemp --directory espressif.XXXXXX) \
     && echo "Temporary download directory: ${ESPTEMP}." \
-    && PUSHD=$pwd \
+    && PUSHD=${PWD} \
     && cd ${ESPTEMP} \
     && curl \
         --location \
