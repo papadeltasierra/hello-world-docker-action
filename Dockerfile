@@ -31,15 +31,16 @@ RUN \
     echo "Downloading the EspressIF IDE..." \
     && ESPTEMP=$(mktemp espressif.XXXXXX) \
     && echo "Temporary download directory: ${ESPTEMP}." \
+    && pushd ${ESTEMP} \
     && curl \
         --location \
-        --output-dir ${ESPTEMP} \
         --output ${FILEPREFIX}-${RELEASE}.zip \
         ${URLPREFIX}/$RELEASE.zip \
+    && popd \
     && REMOTE_HASH=$(sha256sum ${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip) \
     && if [[ "${REMOTE_HASH}" != "${HASH}" ]]; \
        then \
-           echo "EspressIF ZIPfile hash has changed!"; \
+           echo "EspressIF ZIPfile hash, '${REMOTE_HASH}',' has changed!"; \
            exit 1; \
        fi
 
