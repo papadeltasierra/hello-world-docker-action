@@ -39,8 +39,8 @@ runs:
           exit 1
         }
         # Passing result to the next step.
-        Write-Information "'$eclipsec[0].FullName' was found." -InformationAction Continue
-        echo "eclipsec=$eclipsec[0].FullName" >> $env:GITHUB_ENV
+        Write-Information "'$($eclipsec[0].FullName)' was found." -InformationAction Continue
+        echo "eclipsec=$($eclipsec[0].FullName)" >> $env:GITHUB_ENV
 
     - name: Build TLSR8258 ZigBee image
       shell: pwsh
