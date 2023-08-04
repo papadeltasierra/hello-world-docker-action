@@ -50,8 +50,7 @@ runs:
         $proc=Start-Process `
           -FilePath $env:eclipsec `
           -ArgumentList `
-            "-vm `
-            ""${{ inputs.ide }}\jre\bin\client"" `
+            "-vm ""${{ inputs.ide }}\jre\bin\client"" `
             -noSplash `
             --launcher.suppressErrors `
             -application org.eclipse.cdt.managedbuilder.core.headlessbuild `
@@ -74,7 +73,7 @@ runs:
         else
         {
           # Check exit code.
-          echo "eclipsec_rc=$proc.ExitCode" >> $env:GUBHUB_ENV
+          echo "eclipsec_rc=$($proc.ExitCode)" >> $env:GUBHUB_ENV
         }
 
     - name: Check for errors and expected files
