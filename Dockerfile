@@ -16,13 +16,15 @@ ENV DIRNAME=/opt/espressif-idf
 ENV FILEPREFIX=esp-ide-release
 ENV URLPREFIX=https://github.com/espressif/esp-idf/archive/refs/heads/release
 
+# We also add "curl" to the list below because we need it to download the ZIPfile.
 RUN \
     echo "Installing toolchain prerequisites..." \
     && apt --yes update \
     && apt --yes install \
         wget flex bison gperf python3 python3-pip \
         python3-venv cmake ninja-build ccache \
-        libffi-dev libssl-dev dfu-util libusb-1.0-0
+        libffi-dev libssl-dev dfu-util libusb-1.0-0 \
+        curl
 
 # Note the need for the semi-colons in the 'if' test below.
 RUN \
