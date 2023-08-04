@@ -67,6 +67,7 @@ RUN \
     && PUSHD=$PWD \
     && echo "Basedir: ${DIRNAME}" \
     && ls -lsap "${DIRNAME}" \
+    && find "${DIRNAME}" -name install.sh \
     && cd "${DIRNAME}/${FILEPREFIX}-${RELEASE}/esp/esp-idf" \
     && ./install.sh esp32 \
     && cd "${PUSHD}" \
