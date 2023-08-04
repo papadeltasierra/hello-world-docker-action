@@ -3,7 +3,7 @@ description: 'Install the Zigbee SDK required to build Telink tlsr825x projects'
 inputs:
   directory:
     description: 'Directory into which to install the Zigbee SDK'
-    default: 'c:\telink\zigbee-sdk'
+    default: 'c:\telink\zigbee_sdk'
 env:
   SDK_DIR: sdk
   SDK_URI: "http://wiki.telink-semi.cn/tools_and_sdk/Zigbee/Zigbee_SDK.zip"
