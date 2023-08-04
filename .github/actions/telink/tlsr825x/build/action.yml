@@ -1,3 +1,4 @@
+# Action to build a Telink Zigbee project.
 name: 'Build a Telink tlsr825x project'
 description: 'Install the Telink IDE, Zigbee SDK and the build a tlsr825x project'
 
