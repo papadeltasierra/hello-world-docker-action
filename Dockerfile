@@ -58,7 +58,7 @@ RUN \
        fi \
     && echo "Extracting the EspressIF IDE..." \
     && mkdir --parents "${DIRNAME}" \
-    && unzip "${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip" --directory "${DIRNAME}" \
+    && unzip "${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip" -d "${DIRNAME}" \
     && echo "Deleting the temporary ZIPfile and directory..." \
     && rm --force --recursive "${ESPTEMP}"
 
