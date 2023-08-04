@@ -13,7 +13,7 @@ ENV RELEASE=v5.1
 ENV HASH=123456
 
 ENV DIRNAME=/opt/espressif-idf
-ENV FILEPREFIX=esp-ide-release
+ENV FILEPREFIX=esp-idf-release
 ENV URLPREFIX=https://github.com/espressif/esp-idf/archive/refs/heads/release
 
 # We also add "curl" to the list below because we need it to download the ZIPfile.
@@ -36,9 +36,12 @@ RUN \
     && curl \
         --location \
         --output ${FILEPREFIX}-${RELEASE}.zip \
-        ${URLPREFIX}/$RELEASE.zip \
+        ${URLPREFIX}/${RELEASE}.zip \
+    && echo "Debug 1" \
     && cd ${PUSHD} \
+    && echo "Debug 2" \
     && REMOTE_HASH=$(sha256sum ${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip) \
+    && echo "Debug 3" \
     && if [[ "${REMOTE_HASH}" != "${HASH}" ]]; \
        then \
            echo "EspressIF ZIPfile hash, '${REMOTE_HASH}',' has changed!"; \
@@ -48,7 +51,7 @@ RUN \
 RUN \
     echo "Extracting the EspressIF IDE..." \
     && mkdir --parents ${DIRNAME} \
-    && unzip ${ESPTEMP}/${FILEPREFIX}-$RELEASE.zip -d ${DIRNAME} \
+    && unzip ${ESPTEMP}/${FILEPREFIX}-${RELEASE}.zip --directory ${DIRNAME} \
     && echo "Deleting the temporary ZIPfile and directory..." \
     && rm --force --recursive ${ESPTEMP}
 
