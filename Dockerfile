@@ -14,6 +14,7 @@ ENV URLPREFIX=https://github.com/espressif/esp-idf/archive/refs/heads/release
 
 RUN \
     echo "Installing toolchain prerequisites..." \
+    && apt update \
     && apt-get install \
         wget flex bison gperf python3 python3-pip \
         python3-venv cmake ninja-build ccache \
