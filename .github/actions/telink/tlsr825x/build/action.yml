@@ -34,7 +34,7 @@ runs:
 
         # We need some intermediate variables to help upload artifacts.
         $_extensions_regex=${env:_extensions}.Replace(",", "|")
-        $_images_regex=${{ inputs.zigbee_sdk }}\${env:_workspaces}\${{ inputs.project }}\${{ inputs.project }}\${_extensions_regex}
+        $_images_regex="${{ inputs.zigbee_sdk }}\${env:_workspaces}\${{ inputs.project }}\${{ inputs.project }}\${_extensions_regex}"
         $_images_regex=$_images_regex.Replate("\", "/")
         echo "_images_regex=$_images_regex" >> ${env:GITHUB_ENV}
 
@@ -147,7 +147,6 @@ runs:
     - uses: actions/upload-artifact@v3
       with:
         name: tlsr825x-firmware
-        # Note that this is REGEX and not a Powershell statement so the '$'s have to escaped to avoid them being
-        # identified as "end of string".
+        # Note we have a carefully crafted REGEX because "\" characters confuse the REGEX.
         path: "${{ env._images_regex }}"
         retention-days: 1
