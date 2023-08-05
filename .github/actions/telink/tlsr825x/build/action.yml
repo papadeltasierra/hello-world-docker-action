@@ -45,7 +45,7 @@ runs:
         {
           echo "${image_base}.${ext}" >> ${env:GITHUB_ENV}
         }
-        echo "${EOF} >> ${env:GITHUB_ENV}
+        echo "${EOF}" >> ${env:GITHUB_ENV}
 
     - name: Find eclipsec
       shell: pwsh
