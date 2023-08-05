@@ -40,7 +40,7 @@ runs:
         {
           $images_list += "${image_base}.${ext}"
         }
-        $images_files = $images_list -Join "\n"
+        $image_files = $images_list -Join "\n"
         echo "_image_files=""${image_files}""" >> ${env:GITHUB_ENV}
 
     - name: Debug variables
