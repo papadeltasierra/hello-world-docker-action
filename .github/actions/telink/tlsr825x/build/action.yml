@@ -106,7 +106,7 @@ runs:
         # }
         # elseif ($stderr -ne "")
 
-        Write-Information "Stderr? =:$stderr:= ?" -InformationAction Continue
+        Write-Information "Stderr? =:${stderr}:= ?" -InformationAction Continue
         if ($stderr -ne "")
         {
           Write-Error "eclipsec reported errors." -ErrorAction:Continue
