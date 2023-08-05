@@ -43,12 +43,6 @@ runs:
         $image_files = $images_list -Join "`r`n"
         echo "_image_files=${image_files}" >> ${env:GITHUB_ENV}
 
-    - name: Debug variables
-      shell: pwsh
-      run: |
-        ${env:_image_files}
-        exit 1
-
     - name: Find eclipsec
       shell: pwsh
       run: |
@@ -158,6 +152,5 @@ runs:
     - uses: actions/upload-artifact@v3
       with:
         name: tlsr825x-firmware
-        # path: "${{ env:_image_files }}"
-        path: "eric"
+        path: ${{ env._image_files }}
         retention-days: 1
