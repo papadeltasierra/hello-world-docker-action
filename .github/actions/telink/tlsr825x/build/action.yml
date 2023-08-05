@@ -158,5 +158,5 @@ runs:
     - uses: actions/upload-artifact@v3
       with:
         name: tlsr825x-firmware
-        path: ${{ env:_image_files }}
+        path: "${{ env:_image_files }}"
         retention-days: 1
