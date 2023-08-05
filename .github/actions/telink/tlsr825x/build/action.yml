@@ -145,5 +145,5 @@ runs:
         name: tlsr825x-firmware
         # Note that this is REGEX and not a Powershell statement so the '$'s have to escaped to avoid them being
         # identified as "end of string".
-        path: "${{ inputs.zigbee_sdk }}\\${{env._workspaces}}\\${{ inputs.project }}\\${{ inputs.project }}.[${{ env._extensions_regex }}]$"
+        path: "**\\${{ inputs.project }}\\${{ inputs.project }}.[${{ env._extensions_regex }}]$"
         retention-days: 1
