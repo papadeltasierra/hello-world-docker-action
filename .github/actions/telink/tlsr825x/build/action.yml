@@ -28,9 +28,9 @@ runs:
         _project_root: "tl_zigbee_sdk"
         _extensions: "bin,elf,lst"
       run: |
-        echo "_workspaces=$env:_workspaces" >> $env:GITHUB_ENV
-        echo "_project_root=$env:_project_root" >> $env:GITHUB_ENV
-        echo "_extensions=$env:_extensions" >> $env:GITHUB_ENV
+        echo "_workspaces=$env:_workspaces" >> ${env:GITHUB_ENV}
+        echo "_project_root=$env:_project_root" >> ${env:GITHUB_ENV}
+        echo "_extensions=$env:_extensions" >> ${env:GITHUB_ENV}
 
     - name: Find eclipsec
       shell: pwsh
