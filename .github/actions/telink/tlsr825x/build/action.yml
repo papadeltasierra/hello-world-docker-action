@@ -40,8 +40,8 @@ runs:
         {
           $images_list += "${images_base}.${ext}"
         }
-        $_images_files = $images_list -Join "\n"
-        echo "_image_files=${_image_files}" >> ${env:GITHUB_ENV}
+        $images_files = $images_list -Join "\n"
+        echo "_image_files=${image_files}" >> ${env:GITHUB_ENV}
 
     - name: Find eclipsec
       shell: pwsh
@@ -152,6 +152,5 @@ runs:
     - uses: actions/upload-artifact@v3
       with:
         name: tlsr825x-firmware
-        # Note we have a carefully crafted REGEX because "\" characters confuse the REGEX.
         path: ${{ env:_image_files }}
         retention-days: 1
