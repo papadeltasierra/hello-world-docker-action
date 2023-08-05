@@ -23,9 +23,9 @@ jobs:
         with:
           sparse-checkout: |
             .github
-      - id: install-ide
-        uses: ./.github/actions/telink/tlsr825x/install-ide
-      - id: install-zigbee-sdk
-        uses: ./.github/actions/telink/tlsr825x/install-zigbee-sdk
+      # - id: install-ide
+      #   uses: ./.github/actions/telink/tlsr825x/install-ide
+      # - id: install-zigbee-sdk
+      #   uses: ./.github/actions/telink/tlsr825x/install-zigbee-sdk
       - id: build-tlsr825x-project
         uses: ./.github/actions/telink/tlsr825x/build
