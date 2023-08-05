@@ -39,7 +39,7 @@ runs:
 
         # Writing a multi-line string is "magic" in GitHub!
         # Ref: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
-        $EOF=$[System.Guid]::NewGuid().ToString()
+        $EOF=[System.Guid]::NewGuid().ToString()
         echo "_image_files<<${EOF}" >> ${env:GITHUB_ENV}
         foreach ($ext in $extension_list)
         {
