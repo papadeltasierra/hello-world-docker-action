@@ -31,6 +31,8 @@ runs:
         echo "_workspaces=$env:_workspaces" >> ${env:GITHUB_ENV}
         echo "_project_root=$env:_project_root" >> ${env:GITHUB_ENV}
         echo "_extensions=$env:_extensions" >> ${env:GITHUB_ENV}
+        $_extensions_regex=${env:_extensions} -join "|"
+        echo "_extensions_regex=$env:_extensions_regex" >> ${env:GITHUB_ENV}
 
     - name: Find eclipsec
       shell: pwsh
@@ -119,12 +121,14 @@ runs:
         # See if we have all the expected files.
         $extensions = "${env:_extensions}".split(",")
         $missing = $False
+
+        Get-ChildItem -Path ${image_root} -Recurse
         foreach ($ext in $extensions)
         {
-          if (! $(Test-Path -Path $image_root\${{ inputs.project }}.$ext))
+          if (! $(Test-Path -Path ${image_root}\${{ inputs.project }}.$ext))
           {
-            Write-Error "Expected output file '$image_root\${{ inputs.project }}.$ext' not found." -ErrorAction:Continue
-            $missing = $True
+            Write-Error "Expected output file '${image_root}\${{ inputs.project }}.$ext' not found." -ErrorAction:Continue
+            $missing=$True
           }
         }
 
@@ -142,5 +146,5 @@ runs:
         name: tlsr825x-firmware
         # Note that this is REGEX and not a Powershell statement so the '$'s have to escaped to avoid them being
         # identified as "end of string".
-        path: "${{ inputs.zigbee_sdk }}\\${env:_workspaces}\\${env:_project_root}\\${{ inputs.project }}\\${{ inputs.project }}.*"
+        path: "${{ inputs.zigbee_sdk }}\\${env:_workspaces}\\${env:_project_root}\\${{ inputs.project }}.[${env:_extensions_regex}]$"
         retention-days: 1
