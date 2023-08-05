@@ -4,25 +4,28 @@
 # - Hard-code more paths since we cannot guarentee anything if things move!
 name: 'Install Telink Zigbee SDK'
 description: 'Install the Zigbee SDK required to build Telink tlsr825x projects'
+
+# env: Not valid here - see first 'step' below.
+
 inputs:
   directory:
     description: 'Directory into which to install the Zigbee SDK'
     default: 'c:\telink\zigbee_sdk'
-  # 'env' is not allowed in an action so usr faked inputs starting with underscore.
-  _uri:
-    description: URL from which to download the Zigbee SDK.
-    default: "http://wiki.telink-semi.cn/tools_and_sdk/Zigbee/Zigbee_SDK.zip"
-  _zip:
-    description: Filename for downloaded ZIPfile.
-    default: Zigbee_SDK.zip
-  _hash:
-    description: Expected sha256 hash of the downloaded ZIPfile.
-    default: "33206990B4443565D5D05CB2737235BA3A56D91567714387975212D57EB01583"
 
 runs:
   using: "composite"
   steps:
-    # Create the required directories.
+    - name: Set environment variables.
+      shell: pwsh
+      env:
+        _uri:  "http://wiki.telink-semi.cn/tools_and_sdk/Zigbee/Zigbee_SDK.zip"
+        _zip: Zigbee_SDK.zip
+        _hash: "33206990B4443565D5D05CB2737235BA3A56D91567714387975212D57EB01583"
+      run: |
+        echo "_uri=$env:_uri" >> $env:GITHUB_ENV
+        echo "_zip=$env:_zip" >> $env:GITHUB_ENV
+        echo "_hash=$env:_hash" >> $env:GITHUB_ENV
+
     - name: Create target directory
       shell: pwsh
       run: |
@@ -33,27 +36,27 @@ runs:
     # Download and expand the SDK.
     - name: Download the Zigbee SDK
       shell: pwsh
-      run: Invoke-RestMethod -Method GET -FollowRelLink -Uri "${{ inputs._uri }}" -OutFile "$env:TEMP\${{ inputs._zip }}"
+      run: Invoke-RestMethod -Method GET -FollowRelLink -Uri "${env:_uri}" -OutFile "$env:TEMP\${env:_zip}"
 
     # Validate that the Zigbee SDK has not changed.
     - name: Check SDK hash/version
       shell: pwsh
       run: |
-        $Hash=$(Get-FileHash -Path "$env:TEMP\${{ inputs._zip }}" -Algorithm sha256)
-        if ($Hash.hash -ne "${{ inputs._hash }}")
+        $Hash=$(Get-FileHash -Path "$env:TEMP\${env:_zip}" -Algorithm sha256)
+        if ($Hash.hash -ne "${env:_hash}")
         {
           Write-Warning "Zigbee SDK hash has changed implying Zigbee SDK update!"
-          Write-Warning "Expected sha256: ${{ inputs._hash }}"
+          Write-Warning "Expected sha256: ${env:_hash}"
           Write-Warning "Actual sha256:   $(Out-String -InputObject $Hash.hash)"
         }
 
     - name: Unzip the SDK
       shell: pwsh
-      run: Expand-Archive -Path "$env:TEMP\${{ inputs._zip }}" -DestinationPath "${{ inputs.directory }}"
+      run: Expand-Archive -Path "$env:TEMP\${env:_zip}" -DestinationPath "${{ inputs.directory }}"
 
     - name: Delete SDK Zipfile
       shell: pwsh
-      run: Remove-Item -Path "$env:TEMP\${{ inputs._zip }}"
+      run: Remove-Item -Path "$env:TEMP\${env:_zip}"
 
     - name: List SDK
       shell: pwsh

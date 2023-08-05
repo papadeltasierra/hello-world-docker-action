@@ -4,24 +4,29 @@
 # - Hard-code more paths since we cannot guarentee anything if things move!
 name: 'Install Telink IDE'
 description: 'Install the Eclipse based IDE required to build Telink tlsr825x projects'
+
+# env:  Not allowed here; see the first step below.
+
 inputs:
   directory:
     description: 'Directory into which to install the IDE'
     default: 'c:\telink\ide'
   # Actions should not use "env" so create fake inputs prefixed with underscore.
-  _uri:
-    description: URI from which to download the IDE.
-    default: "https://www.dropbox.com/s/ths9rev0tvhhl96/Telink_IDE.zip?dl=1"
-  _zip:
-    description: ZIPfile name to give the downloaded file.
-    default: Telink_IDE.zip
-  _hash:
-    description: Expected sha256 hash of the IDE ZIPfile.
-    default: "D47595AAFAE1B711A04DC83BAB08467160EA2A3559EA976576C2F8A44F47BF1F"
 
 runs:
   using: "composite"
   steps:
+    - name: Set-up environment variables.
+      shell: pwsh
+      env:
+        _uri: "https://www.dropbox.com/s/ths9rev0tvhhl96/Telink_IDE.zip?dl=1"
+        _zip: Telink_IDE.zip
+        _hash: "D47595AAFAE1B711A04DC83BAB08467160EA2A3559EA976576C2F8A44F47BF1F"
+      run: |
+        echo "_uri=$env:_uri" >> env:GITHUB_ENV
+        echo "_zip=$env:_zip" >> env:GITHUB_ENV
+        echo "_hash=$env:_hash" >> env:GITHUB_ENV
+
     # Create the required directories.
     - name: Create target directoryTLSR825x base directory
       shell: pwsh
@@ -33,14 +38,14 @@ runs:
     # Download and expand the IDE
     - name: Download the IDE
       shell: pwsh
-      run: Invoke-RestMethod -Method GET -FollowRelLink -Uri "${{ inputs._uri }}" -OutFile "$env:TEMP\${{ inputs._zip }}"
+      run: Invoke-RestMethod -Method GET -FollowRelLink -Uri "${env:_uri}" -OutFile "$env:TEMP\${env:_zip}"
 
     # Validate that the IDE has not changed.
     - name: Check IDE hash/version
       shell: pwsh
       run: |
-        $Hash=$(Get-FileHash -Path "$env:TEMP\${{ inputs._zip }}" -Algorithm sha256)
-        if ($Hash.hash -ne "${{ inputs._hash }}")
+        $Hash=$(Get-FileHash -Path "$env:TEMP\${env:_zip}" -Algorithm sha256)
+        if ($Hash.hash -ne "${env:_hash}")
         {
           Write-Warning "IDE hash has changed implying IDE update!"
           Write-Warning "Expected sha256: ${env:IDE_HASH}"
@@ -50,10 +55,10 @@ runs:
     # Note that the IDE has a path "IDE" baked into it.
     - name: Unzip the IDE
       shell: pwsh
-      run: Expand-Archive -Path "$env:TEMP\${{ inputs._zip }}" -DestinationPath "$env:TEMP"
+      run: Expand-Archive -Path "$env:TEMP\${env:_zip}" -DestinationPath "$env:TEMP"
     - name: Delete IDE Zipfile
       shell: pwsh
-      run: Remove-Item -Path "$env:TEMP\${{ inputs._zip }}"
+      run: Remove-Item -Path "$env:TEMP\${env:_zip}"
 
     - name: List IDE
       shell: pwsh

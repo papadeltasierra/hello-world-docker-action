@@ -2,6 +2,8 @@
 name: 'Build a Telink tlsr825x project'
 description: 'Install the Telink IDE, Zigbee SDK and the build a tlsr825x project'
 
+# env: Not valid in an Action; see the first step below.
+
 inputs:
   ide:
     description: Location of the Telink IDE
@@ -15,20 +17,21 @@ inputs:
   board:
     description: tlsr825x board to target
     default: unused
-  # Cannot set environment variables so use defaults prefixed with '_'
-  _workspaces:
-    description: Relative path to workspaces below the ZigBee SDK
-    default: "tl_zigbee_sdk\\build\\tlsr_tc32"
-  _project_root:
-    description: Relative path to projects below the workspaces
-    default: "tl_zigbee_sdk"
-  _extensions:
-    description: File extensions of expected output from the build step
-    default: "bin,elf,lst"
 
 runs:
   using: "composite"
   steps:
+    - name: Set environment variables
+      shell: pwsh
+      env:
+        _workspaces: "tl_zigbee_sdk\\build\\tlsr_tc32"
+        _project_root: "tl_zigbee_sdk"
+        _extensions: "bin,elf,lst"
+      run: |
+        echo "_workspaces=$env:_workspaces" >> $env:GITHUB_ENV
+        echo "_project_root=$env:_project_root" >> $env:GITHUB_ENV
+        echo "_extensions=$env:_extensions" >> $env:GITHUB_ENV
+
     - name: Find eclipsec
       shell: pwsh
       run: |
@@ -54,8 +57,8 @@ runs:
             "-vm", """${{ inputs.ide }}\jre\bin\client""", `
             "-noSplash", `
             "-application", "org.eclipse.cdt.managedbuilder.core.headlessbuild", `
-            "-import", """${{ inputs.zigbee_sdk }}\${{ inputs._workspaces }}""", `
-            "-build", """${{ inputs._project_root }}/${{ inputs.project }}""", `
+            "-import", """${{ inputs.zigbee_sdk }}\${env:_workspaces}""", `
+            "-build", """${env:_project_root}/${{ inputs.project }}""", `
             "--launcher.suppressErrors" `
           -NoNewWindow `
           -RedirectStandardOutput $env:TEMP\stdout.txt `
@@ -96,7 +99,7 @@ runs:
         # - ExitCode is zero (0) (checked above)
         # - stderr log output is empty
         # - an 'elf' image has been created
-        $image_root = "${{ inputs.zigbee_sdk }}\${{ inputs._workspaces }}\${{ inputs._project_root }}\${{ inputs.project }}"
+        $image_root = "${{ inputs.zigbee_sdk }}\${env:_workspaces}\${env:_project_root}\${{ inputs.project }}"
 
         # Appears that the compiler exits with status 1 for success!
         # if ($env:eclipsec_rc -ne 0)
@@ -106,15 +109,15 @@ runs:
         # }
         # elseif ($stderr -ne "")
 
-        Write-Information "Stderr? =:${stderr}:= ?" -InformationAction Continue
-        if ($stderr -ne "")
+        # Note that a toally empty error file returns $null when queried using Get-Content.
+        if ($stderr -ne $null)
         {
           Write-Error "eclipsec reported errors." -ErrorAction:Continue
           exit 1
         }
 
         # See if we have all the expected files.
-        $extensions = "${{ inputs._extensions }}".split(",")
+        $extensions = "${env:_extensions}".split(",")
         $missing = $False
         foreach ($ext in $extensions)
         {
@@ -139,5 +142,5 @@ runs:
         name: tlsr825x-firmware
         # Note that this is REGEX and not a Powershell statement so the '$'s have to escaped to avoid them being
         # identified as "end of string".
-        path: "${{ inputs.zigbee_sdk }}\\${{ inputs._workspaces }}\\${{ inputs._project_root }}\\${{ inputs.project }}\\${{ inputs.project }}.*"
+        path: "${{ inputs.zigbee_sdk }}\\${env:_workspaces}\\${env:_project_root}\\${{ inputs.project }}\\${{ inputs.project }}.*"
         retention-days: 1
