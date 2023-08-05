@@ -34,7 +34,7 @@ runs:
 
         # We need some intermediate variables to help upload artifacts.
         $_extensions_regex=${env:_extensions}.Replace(",", "|")
-        $_images_regex="${{ inputs.zigbee_sdk }}\${env:_workspaces}\${{ inputs.project }}\${{ inputs.project }}\${_extensions_regex}"
+        $_images_regex="${{ inputs.zigbee_sdk }}\${env:_workspaces}\${{ inputs.project }}\${{ inputs.project }}\[${_extensions_regex}]"
         $_images_regex=$_images_regex.Replace("\", "/")
         echo "_images_regex=$_images_regex" >> ${env:GITHUB_ENV}
 
