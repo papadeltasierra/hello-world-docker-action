@@ -31,8 +31,12 @@ runs:
         echo "_workspaces=$env:_workspaces" >> ${env:GITHUB_ENV}
         echo "_project_root=$env:_project_root" >> ${env:GITHUB_ENV}
         echo "_extensions=$env:_extensions" >> ${env:GITHUB_ENV}
+
+        # We need some intermediate variables to help upload artifacts.
         $_extensions_regex=${env:_extensions}.Replace(",", "|")
-        echo "_extensions_regex=$_extensions_regex" >> ${env:GITHUB_ENV}
+        $_images_regex=${{ inputs.zigbee_sdk }}\${env:_workspaces}\${{ inputs.project }}\${{ inputs.project }}\${_extensions_regex}
+        $_images_regex=$_images_regex.Replate("\", "/")
+        echo "_images_regex=$_images_regex" >> ${env:GITHUB_ENV}
 
     - name: Find eclipsec
       shell: pwsh
@@ -145,5 +149,5 @@ runs:
         name: tlsr825x-firmware
         # Note that this is REGEX and not a Powershell statement so the '$'s have to escaped to avoid them being
         # identified as "end of string".
-        path: "**\\${{ inputs.project }}\\${{ inputs.project }}.[${{ env._extensions_regex }}]$"
+        path: "${{ env._images_regex }}"
         retention-days: 1
