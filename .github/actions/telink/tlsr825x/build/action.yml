@@ -33,12 +33,11 @@ runs:
         echo "_extensions=$env:_extensions" >> ${env:GITHUB_ENV}
 
         # We need some intermediate variables to help upload artifacts.
-        $_extensions_regex=${env:_extensions}.Replace(",", "|")
         $image_base="${{ inputs.zigbee_sdk }}\${env:_workspaces}\${{ inputs.project }}\${{ inputs.project }}"
         $image_list = @()
         foreach ($ext in $env:_extensions)
         {
-          $images_list += "${images_base}.${ext}"
+          $images_list += "${image_base}.${ext}"
         }
         $images_files = $images_list -Join "\n"
         echo "_image_files=""${image_files}""" >> ${env:GITHUB_ENV}
