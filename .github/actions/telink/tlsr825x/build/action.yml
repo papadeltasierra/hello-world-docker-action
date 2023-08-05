@@ -101,7 +101,6 @@ runs:
         # - ExitCode is zero (0) (checked above)
         # - stderr log output is empty
         # - an 'elf' image has been created
-        $image_root = "${{ inputs.zigbee_sdk }}\${env:_workspaces}\${env:_project_root}\${{ inputs.project }}"
 
         # Appears that the compiler exits with status 1 for success!
         # if ($env:eclipsec_rc -ne 0)
@@ -119,10 +118,10 @@ runs:
         }
 
         # See if we have all the expected files.
+        $image_root = "${{ inputs.zigbee_sdk }}\${env:_workspaces}"
         $extensions = "${env:_extensions}".split(",")
         $missing = $False
 
-        Get-ChildItem -Path "${{ inputs.zigbee_sdk }}\${{ inputs.project }}.bin" -Recurse
         foreach ($ext in $extensions)
         {
           if (! $(Test-Path -Path ${image_root}\${{ inputs.project }}.$ext))
@@ -146,5 +145,5 @@ runs:
         name: tlsr825x-firmware
         # Note that this is REGEX and not a Powershell statement so the '$'s have to escaped to avoid them being
         # identified as "end of string".
-        path: "${{ inputs.zigbee_sdk }}\\${env:_workspaces}\\${env:_project_root}\\${{ inputs.project }}.[${env:_extensions_regex}]$"
+        path: "${{ inputs.zigbee_sdk }}\\${env:_workspaces}\\${{ inputs.project }}.[${env:_extensions_regex}]$"
         retention-days: 1
