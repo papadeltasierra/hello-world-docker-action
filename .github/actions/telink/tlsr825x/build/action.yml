@@ -31,7 +31,7 @@ runs:
         echo "_workspaces=$env:_workspaces" >> ${env:GITHUB_ENV}
         echo "_project_root=$env:_project_root" >> ${env:GITHUB_ENV}
         echo "_extensions=$env:_extensions" >> ${env:GITHUB_ENV}
-        $_extensions_regex=${env:_extensions} -join "|"
+        $_extensions_regex=${env:_extensions}.Replace(",", "|")
         echo "_extensions_regex=$_extensions_regex" >> ${env:GITHUB_ENV}
 
     - name: Find eclipsec
