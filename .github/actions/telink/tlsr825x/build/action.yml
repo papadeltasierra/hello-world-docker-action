@@ -41,7 +41,7 @@ runs:
           $images_list += "${image_base}.${ext}"
         }
         $image_files = $images_list -Join "`r`n"
-        echo "_image_files=${image_files}" >> ${env:GITHUB_ENV}
+        echo "_image_files=""${image_files}""" >> ${env:GITHUB_ENV}
 
     - name: Find eclipsec
       shell: pwsh
