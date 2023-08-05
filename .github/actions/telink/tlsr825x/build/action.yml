@@ -122,7 +122,7 @@ runs:
         $extensions = "${env:_extensions}".split(",")
         $missing = $False
 
-        Get-ChildItem -Path ${image_root} -Recurse
+        Get-ChildItem -Path "${{ inputs.zigbee_sdk }}\${{ inputs.project }}.bin" -Recurse
         foreach ($ext in $extensions)
         {
           if (! $(Test-Path -Path ${image_root}\${{ inputs.project }}.$ext))
